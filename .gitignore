@@ -91,3 +91,7 @@ $RECYCLE.BIN/
 *.tlog
 *.tmp
 *.temp
+
+
+#vscode files
+.vscode/
