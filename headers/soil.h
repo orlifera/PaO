@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "humidity.h"
 class SoilHumiditySensor : public HumiditySensor {
     private:
     static double soilThreshold;

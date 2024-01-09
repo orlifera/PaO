@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "sensor.h"
 class HumiditySensor : public Sensor {
     private:
     const bool capacity;

@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/atm.h"
 
 AtmPressureSensor::AtmPressureSensor(string n, vector<Data> v) : PressureSensor(n, v, 1.0) {}

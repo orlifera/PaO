@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "data.h"
 class Sensor {
     private:
     string name;

@@ -1,4 +1,5 @@
 #pragma once
+#include "include.h"
 class Time {
     private:
     unsigned int sec;

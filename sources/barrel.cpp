@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/barrel.h"
 
 int BarrelSensor::isInThreshold() const

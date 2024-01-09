@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "sensor.h"
 class PressureSensor : public Sensor {
     private:
     double pressure;

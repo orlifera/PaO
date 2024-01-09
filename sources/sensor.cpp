@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/sensor.h"
 
 Sensor::Sensor(string n, vector<Data> v) : name(n), infoArray(v) {}

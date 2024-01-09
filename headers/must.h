@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "temperature.h"
 class MustTemperatureSensor : public TemperatureSensor {
     private:
     static double mustThreshold;

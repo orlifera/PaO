@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/soil.h"
 
 SoilHumiditySensor::SoilHumiditySensor(string n, vector<Data> v, double h) : HumiditySensor(n, v, false, h) {}

@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/group.h"
 
 Group::Group(string n, vector<Sensor *> s) : groupName(n), sensors(s) {}

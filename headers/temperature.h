@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "sensor.h"
 class TemperatureSensor : public Sensor {
     private:
     const bool contact; //chiedere

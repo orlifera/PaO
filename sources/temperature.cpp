@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/temperature.h"
 
 TemperatureSensor::TemperatureSensor(string n, vector<Data> v, bool c, double t) : Sensor(n, v), contact(c), temp(t) {}

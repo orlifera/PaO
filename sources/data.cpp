@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/data.h"
 
 Data::Data(double val, Time t) : value(val), time(t) {}

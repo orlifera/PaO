@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/vines.h"
 
 VinesTemperatureSensor::VinesTemperatureSensor(string n, vector<Data> v, double t) : TemperatureSensor(n, v, false, t) {}

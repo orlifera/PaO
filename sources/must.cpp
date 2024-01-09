@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/must.h"
 
 MustTemperatureSensor::MustTemperatureSensor(string n, vector<Data> v, double t) : TemperatureSensor(n, v, true, t) {}

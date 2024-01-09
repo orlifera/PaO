@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/humidity.h"
 
 HumiditySensor::HumiditySensor(string n, vector<Data> v, bool c, double h) : Sensor(n, v), capacity(c), humidity(h) {}
