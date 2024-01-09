@@ -1,22 +1,9 @@
-#include<iostream>
-#include<string>
-#include<vector>
-#include "time.h"
-#include "data.h"
-#include "sensor.h"
-#include "temperature.h"
-#include "vines.h"
-#include "must.h"
-#include "humidity.h"
-#include "air.h"
-#include "soil.h"
-#include "pressure.h"
-#include "atm.h"
-#include "barrel.h"
-#include "group.h"
-using std::cout;
+#include <iostream>
+#include <string>
+#include <vector>
 using std::cerr;
+using std::cout;
 using std::endl;
+using std::ostream;
 using std::string;
 using std::vector;
-using std::ostream;
