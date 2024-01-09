@@ -1,8 +1,6 @@
 #pragma once
 #include "pressure.h"
 class BarrelSensor : public PressureSensor {
-    private:
-    static double barrelThreshold;
     public:
-    int isInThreshold() const override;
+    BarrelSensor(string, vector<Data>, double, double =0);
 };
