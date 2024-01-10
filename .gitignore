@@ -35,12 +35,6 @@ moc_*.h
 qrc_*.cpp
 ui_*.h
 
-# Qt Creator project files
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qbs.user.*
-
 # Qt Deployment
 qtdeploy/
 
