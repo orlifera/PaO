@@ -1,5 +1,5 @@
 #pragma once
-#include "include.h"
+#include "sensor.h"
 class Group
 {
 private:
@@ -11,7 +11,9 @@ public:
     string getGroupName() const;
     vector<Sensor *> getSensors() const;
     void addSensor(Sensor *);
-    void removeSensor();
+    void removeSensor(Sensor *);
+    void removeSensor(string);
+    void removeSensor(int);
     Sensor *find(string) const;
     void renameGroup(string);
     // Group& operator=(const Group&);

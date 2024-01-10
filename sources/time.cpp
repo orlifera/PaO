@@ -1,4 +1,3 @@
-#include "../headers/include.h"
 #include "../headers/time.h"
 
 Time::Time(unsigned int h, unsigned int m, unsigned int s)

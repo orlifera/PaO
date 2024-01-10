@@ -1,12 +1,9 @@
 #pragma once
-#include "include.h"
+#include "sensor.h"
 class HumiditySensor : public Sensor {
     private:
     const bool capacity;
-    double humidity;
     public:
-    HumiditySensor(string, vector<Data>, bool, double);
+    HumiditySensor(string, vector<Data>, bool, double, double =0);
     bool isCapacity() const;
-    double getHumidity() const;
-    void setHumidity(double);
 };
