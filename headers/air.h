@@ -1,9 +1,11 @@
 #pragma once
 #include "include.h"
-class AirHumiditySensor : public HumiditySensor {
-    private:
+class AirHumiditySensor : public HumiditySensor
+{
+private:
     static double airThreshold;
-    public:
+
+public:
     AirHumiditySensor(string, vector<Data>, double);
     int isInThreshold() const override;
 };
