@@ -19,6 +19,7 @@ class Sensor {
     virtual void generate() = 0;   //metodo astratto per la generazione dei dati
     void renameSensor(string);     //rinomina il sensore
     //controlla che l'ultimo dato del sensore sia all'interno della soglia
-    int isInThreshold() const;     
+    int isInThreshold() const;   
+    void push(Data&);              //permette il push di un Data in infoArray (privato)
     virtual ~Sensor() = default;   //distruttore di default virtuale
 };

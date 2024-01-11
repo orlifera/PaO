@@ -3,9 +3,9 @@
 //sensore di temperatura del mosto derivato da sensore di temperatura generico
 class MustTemperatureSensor : public TemperatureSensor {
     private:
-    double timer;               //timer di femrentazione
-    static double stdDeviation; //deviazione standard
+    double timer;        //timer di fermentazione
+    static double range; //deviazione standard
     public:
-    MustTemperatureSensor(string, vector<Data>, double, double =0);
+    MustTemperatureSensor(string, vector<Data>, double, double, double =0);
     void generate() override;
 };

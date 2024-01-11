@@ -10,13 +10,14 @@ double SoilHumiditySensor::logStdDeviation = 0.5;
 void SoilHumiditySensor::generate() {
     random_device rd;
     default_random_engine generator(rd());
-    lognormal_distribution<double> lognormal(getExpValue(), logStdDeviation);
-    auto it = getArray().begin();
+    lognormal_distribution<double> distribution(getExpValue(), logStdDeviation);
     //8 misurazioni al giorno
-    for (unsigned int hour; hour < 24 || it != getArray().end(); hour += 3, ++it) {
-        it->setTime(hour);
-        double humidity = lognormal(generator) * 100.0;
+    for (unsigned int hour = 0; hour < 24; hour += 3) {
+        Data d;
+        d.setTime(hour);
+        double humidity = distribution(generator) * 100.0;
         humidity = max(0.0, min(100.0, humidity));
-        it->setValue(humidity);
+        d.setValue(humidity);
+        push(d);
     }
 }

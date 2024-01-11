@@ -17,6 +17,7 @@ using std::random_device;
 using std::normal_distribution;
 using std::uniform_real_distribution;
 using std::lognormal_distribution;
+using std::poisson_distribution;
 //keywords
 using std::cerr;
 using std::cout;

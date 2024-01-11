@@ -21,12 +21,13 @@ double AirHumiditySensor::beta_distribution(double a, double b, default_random_e
 void AirHumiditySensor::generate() {
     random_device rd;
     default_random_engine generator(rd());
-    auto it = getArray().begin();
     //4 misurazioni al giorno
-    for (unsigned int hour; hour < 24 || it != getArray().end(); hour += 6, ++it) {
-        it->setTime(hour);
+    for (unsigned int hour = 0; hour < 24; hour += 6) {
+        Data d;
+        d.setTime(hour);
         double humidity = beta_distribution(alpha, beta, generator) * 100.0;
         humidity = max(0.0, min(100.0, humidity));
-        it->setValue(humidity);
+        d.setValue(humidity);
+        push(d);
     }
 }

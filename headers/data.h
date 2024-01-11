@@ -6,7 +6,7 @@ class Data {
     double value;   //valore dato
     Time time;      //orario nella quale viene misurato
     public:
-    Data(double, Time);
+    Data(double =0, Time =0);
     double getValue() const;   //ritorna il valore del dato
     void setValue(double);     //assegna un nuovo valore (misurazione)
     Time getTime() const;      //ritorna l'orario

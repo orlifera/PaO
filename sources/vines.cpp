@@ -12,13 +12,14 @@ void VinesTemperatureSensor::generate() {
     const double pi = acos(-1);
     random_device rd;
     default_random_engine generator(rd());
-    normal_distribution<double> gauss(getExpValue(), stdDeviation);
+    normal_distribution<double> distribution(getExpValue(), stdDeviation);
     //una misurazione all'ora
-    auto it = getArray().begin();
-    for (unsigned int hour; hour < 24 || it != getArray().end(); ++hour, ++it) {
-        it->setTime(hour);
+    for (unsigned int hour = 0; hour < 24; ++hour) {
+        Data d;
+        d.setTime(hour);
         double temperature = getExpValue() + amplitude * sin(2 * pi * hour / 24.0);
-        temperature += gauss(generator);
-        it->setValue(temperature);
+        temperature += distribution(generator);
+        d.setValue(temperature);
+        push(d);
     }
 }
