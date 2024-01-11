@@ -1,15 +1,25 @@
 #include "../headers/mainwindow.h"
-#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QLabel *label = new QLabel("Hello World");
-    label->setAlignment(Qt::AlignCenter);
-    // setCentralWidget(label);
+    SetGUI();
 }
 
 MainWindow::~MainWindow()
 {
     // Cleanup if needed
+}
+
+void MainWindow::SetGUI()
+{
+    // Creates main widget
+    QWidget *mainWidget = new QWidget(this);
+    this->setCentralWidget(mainWidget);
+
+    layout = new QGridLayout(mainWidget);
+
+    // sensor list for laterl panel
+    sensors = new QListWidget(this);
+    layout->addWidget(sensors);
 }
