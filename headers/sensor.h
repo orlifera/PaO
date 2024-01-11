@@ -1,22 +1,24 @@
 #pragma once
 #include "data.h"
+//sensore generico
 class Sensor {
     private:
-    string name;
-    vector<Data> infoArray; //valori effettivi
-    double expectedValue; //valore che mi aspetto
-    double threshold; //soglia
+    string name;            //nome che lo identifica
+    vector<Data> infoArray; //valori effettivi - dati misurati
+    double expectedValue;   //valore atteso dallo specifico sensore
+    double threshold;       //soglia
     public:
     Sensor(string, vector<Data>, double, double =0);
-    Data getInfo(int) const;
-    string getName() const;
-    vector<Data> getArray() const;
-    double getExpValue() const;
-    double getThreshold() const;
-    void setExpValue(double);
-    void setThreshold(double);
-    virtual void generate(string);
-    void renameSensor(string);
-    int isInThreshold() const;
-    virtual ~Sensor() = 0;
+    Data getInfo(int) const;       //ritorna dato fornendo la posizione
+    string getName() const;        //ritorna nome
+    vector<Data> getArray() const; //ritorna il vettore dati
+    double getExpValue() const;    //ritorna il valore atteso
+    double getThreshold() const;   //ritorna la soglia
+    void setExpValue(double);      //assegna nuovo valore atteso
+    void setThreshold(double);     //assegna nuova soglia
+    virtual void generate() = 0;   //metodo astratto per la generazione dei dati
+    void renameSensor(string);     //rinomina il sensore
+    //controlla che l'ultimo dato del sensore sia all'interno della soglia
+    int isInThreshold() const;     
+    virtual ~Sensor() = default;   //distruttore di default virtuale
 };

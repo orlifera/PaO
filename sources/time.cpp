@@ -11,6 +11,7 @@ unsigned int Time::Hour() const { return sec / 3600; }
 unsigned int Time::Mins() const { return (sec / 60) % 60; }
 unsigned int Time::Secs() const { return sec % 60; }
 // Time::operator int() { return sec; }
+//operatore per la visualizzazione dell'orario in formato h:m:s
 ostream &operator<<(ostream &os, const Time &t)
 {
     return os << t.Hour() << ":" << t.Mins() << ":" << t.Secs();

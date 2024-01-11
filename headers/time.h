@@ -1,5 +1,6 @@
 #pragma once
 #include "include.h"
+//orario identificativo per i dati misurati dai sensori
 class Time {
     private:
     unsigned int sec;
@@ -8,5 +9,4 @@ class Time {
     unsigned int Hour() const;
     unsigned int Mins() const;
     unsigned int Secs() const;
-    //operator int();
 };
