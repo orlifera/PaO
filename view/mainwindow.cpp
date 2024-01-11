@@ -22,4 +22,18 @@ void MainWindow::SetGUI()
     // sensor list for laterl panel
     sensors = new QListWidget(this);
     layout->addWidget(sensors);
+
+    sensorDisplay = new QTextEdit(this);
+    layout->addWidget(sensorDisplay);
+
+    topMenu = new QMenuBar(this);
+    QMenu *file = topMenu->addMenu(tr("&File"));
+
+    file->addAction(tr("Save"), this, SLOT(saveData()));
+    file->addAction(tr("Load"), this, SLOT(loadData()));
+
+    setMenuBar(topMenu);
+
+    layout->setMenuBar(topMenu);
+    centralWidget()->setLayout(layout);
 }

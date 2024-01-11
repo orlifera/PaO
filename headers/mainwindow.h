@@ -24,7 +24,7 @@ private:
     QTextEdit *sensorDisplay;
     QMenuBar *topMenu;
     QGridLayout *layout;
-    // QChartView *chartView;
+    // QtChartView *chartView;
 
     void SetGUI();
 };
