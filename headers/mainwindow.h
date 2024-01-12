@@ -7,9 +7,10 @@
 #include <QListWidget>
 #include <QTextEdit>
 #include <QMenuBar>
+#include <QMenu>
 #include <QGridLayout>
 #include <QLabel>
-// #include <QtCharts>
+#include <QtCharts>
 
 class MainWindow : public QMainWindow
 {
