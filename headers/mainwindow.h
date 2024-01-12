@@ -4,6 +4,12 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QWidget>
+#include <QListWidget>
+#include <QTextEdit>
+#include <QMenuBar>
+#include <QGridLayout>
+#include <QLabel>
+// #include <QtCharts>
 
 class MainWindow : public QMainWindow
 {
@@ -14,6 +20,13 @@ public:
     ~MainWindow();
 
 private:
+    QListWidget *sensors;
+    QTextEdit *sensorDisplay;
+    QMenuBar *topMenu;
+    QGridLayout *layout;
+    // QtChartView *chartView;
+
+    void SetGUI();
 };
 
 #endif // MAINWINDOW_H
