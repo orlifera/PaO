@@ -43,6 +43,7 @@ qtdeploy/
 *.user
 *.userosscache
 *.sln.docstates
+*.qmake.stash
 
 # Build results
 [Dd]ebug/

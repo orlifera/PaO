@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = /Library/Developer/CommandLineTools/usr/bin/clang
 CXX           = /Library/Developer/CommandLineTools/usr/bin/clang++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_CHARTS_LIB -DQT_OPENGLWIDGETS_LIB -DQT_WIDGETS_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -Wall -Wextra $(DEFINES)
 CXXFLAGS      = -pipe -stdlib=libc++ -O2 -std=gnu++1z $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -Wall -Wextra $(DEFINES)
-INCPATH       = -I. -I. -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I/opt/homebrew/share/qt/mkspecs/macx-clang -F/opt/homebrew/lib
+INCPATH       = -I. -I. -I/opt/homebrew/lib/QtCharts.framework/Headers -I/opt/homebrew/lib/QtOpenGLWidgets.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AGL.framework/Headers -I/opt/homebrew/share/qt/mkspecs/macx-clang -F/opt/homebrew/lib
 QMAKE         = /opt/homebrew/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = Progetto1.0.0
 DISTDIR = /Users/orli/UNI/PAO/Progetto/.tmp/Progetto1.0.0
 LINK          = /Library/Developer/CommandLineTools/usr/bin/clang++
 LFLAGS        = -stdlib=libc++ -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -Wl,-rpath,@executable_path/../Frameworks -Wl,-rpath,/opt/homebrew/lib
-LIBS          = $(SUBLIBS) -F/opt/homebrew/lib -framework QtWidgets -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework IOKit -framework DiskArbitration -framework AGL -framework OpenGL   
+LIBS          = $(SUBLIBS) -F/opt/homebrew/lib -framework QtCharts -framework QtOpenGLWidgets -framework QtWidgets -framework QtOpenGL -framework QtGui -framework AppKit -framework ImageIO -framework Metal -framework QtCore -framework IOKit -framework DiskArbitration -framework AGL -framework OpenGL   
 AR            = /Library/Developer/CommandLineTools/usr/bin/ar cq
 RANLIB        = /Library/Developer/CommandLineTools/usr/bin/ranlib -s
 SED           = sed
@@ -368,6 +368,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -435,7 +436,7 @@ TARGET        = Progetto.app/Contents/MacOS/Progetto
 EXPORT_QMAKE_MAC_SDK = macosx
 EXPORT_QMAKE_MAC_SDK_VERSION = 14.0
 EXPORT_QMAKE_XCODE_DEVELOPER_PATH = /Library/Developer/CommandLineTools
-EXPORT__QMAKE_STASH_ = 
+EXPORT__QMAKE_STASH_ = /Users/orli/UNI/PAO/Progetto/.qmake.stash
 EXPORT_VALID_ARCHS = arm64
 EXPORT_DEFAULT_ARCHS = arm64
 EXPORT_ARCHS = $(filter $(EXPORT_VALID_ARCHS), $(if $(ARCHS), $(ARCHS), $(if $(EXPORT_DEFAULT_ARCHS), $(EXPORT_DEFAULT_ARCHS), $(EXPORT_VALID_ARCHS))))
@@ -734,6 +735,7 @@ Makefile: Progetto.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf /opt
 		/opt/homebrew/share/qt/mkspecs/features/qt_config.prf \
 		/opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf \
 		/opt/homebrew/share/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf \
 		/opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf \
 		/opt/homebrew/share/qt/mkspecs/features/toolchain.prf \
@@ -763,7 +765,10 @@ Makefile: Progetto.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf /opt
 		/opt/homebrew/share/qt/mkspecs/features/yacc.prf \
 		/opt/homebrew/share/qt/mkspecs/features/lex.prf \
 		Progetto.pro \
+		/opt/homebrew/lib/QtCharts.framework/Resources/QtCharts.prl \
+		/opt/homebrew/lib/QtOpenGLWidgets.framework/Resources/QtOpenGLWidgets.prl \
 		/opt/homebrew/lib/QtWidgets.framework/Resources/QtWidgets.prl \
+		/opt/homebrew/lib/QtOpenGL.framework/Resources/QtOpenGL.prl \
 		/opt/homebrew/lib/QtGui.framework/Resources/QtGui.prl \
 		/opt/homebrew/lib/QtCore.framework/Resources/QtCore.prl
 	$(QMAKE) -o Makefile Progetto.pro
@@ -1050,6 +1055,7 @@ Makefile: Progetto.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf /opt
 /opt/homebrew/share/qt/mkspecs/features/qt_config.prf:
 /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf:
 /opt/homebrew/share/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /opt/homebrew/share/qt/mkspecs/features/exclusive_builds.prf:
 /opt/homebrew/share/qt/mkspecs/features/mac/sdk.prf:
 /opt/homebrew/share/qt/mkspecs/features/toolchain.prf:
@@ -1079,7 +1085,10 @@ Makefile: Progetto.pro /opt/homebrew/share/qt/mkspecs/macx-clang/qmake.conf /opt
 /opt/homebrew/share/qt/mkspecs/features/yacc.prf:
 /opt/homebrew/share/qt/mkspecs/features/lex.prf:
 Progetto.pro:
+/opt/homebrew/lib/QtCharts.framework/Resources/QtCharts.prl:
+/opt/homebrew/lib/QtOpenGLWidgets.framework/Resources/QtOpenGLWidgets.prl:
 /opt/homebrew/lib/QtWidgets.framework/Resources/QtWidgets.prl:
+/opt/homebrew/lib/QtOpenGL.framework/Resources/QtOpenGL.prl:
 /opt/homebrew/lib/QtGui.framework/Resources/QtGui.prl:
 /opt/homebrew/lib/QtCore.framework/Resources/QtCore.prl:
 qmake: FORCE
@@ -1118,6 +1127,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r Progetto.app
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -1153,9 +1163,19 @@ moc_mainwindow.cpp: headers/mainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QListWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QMenuBar \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qmenubar.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QGridLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QLabel \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlabel.h \
 		moc_predefs.h \
 		/opt/homebrew/share/qt/libexec/moc
-	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/orli/UNI/PAO/Progetto/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/orli/UNI/PAO/Progetto -I/Users/orli/UNI/PAO/Progetto -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib headers/mainwindow.h -o moc_mainwindow.cpp
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/orli/UNI/PAO/Progetto/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/orli/UNI/PAO/Progetto -I/Users/orli/UNI/PAO/Progetto -I/opt/homebrew/lib/QtCharts.framework/Headers -I/opt/homebrew/lib/QtOpenGLWidgets.framework/Headers -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtOpenGL.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib headers/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1186,7 +1206,17 @@ main.o: main.cpp headers/group.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QListWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QMenuBar \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qmenubar.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QGridLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QLabel \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 air.o: sources/air.cpp headers/air.h \
@@ -1295,7 +1325,17 @@ mainwindow.o: view/mainwindow.cpp headers/mainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QWidget \
-		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QListWidget \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlistwidget.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QTextEdit \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qtextedit.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QMenuBar \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qmenubar.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QGridLayout \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qgridlayout.h \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/QLabel \
+		/opt/homebrew/lib/QtWidgets.framework/Headers/qlabel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o view/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
