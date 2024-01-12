@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <random>
+#include <n1ohmann/json.hpp>
 //standard keywords utilizzate
 //funzioni matematiche
 using std::acos;  //arcocoseno
@@ -19,6 +20,9 @@ using std::uniform_real_distribution;
 using std::lognormal_distribution;
 using std::poisson_distribution;
 //keywords
+using std::ifstream;
+using std::ofstream;
+using std::setw;
 using std::cerr;
 using std::cout;
 using std::endl;
