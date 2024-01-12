@@ -1,16 +1,6 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 #include "include.h"
-#include <QApplication>
-#include <QMainWindow>
-#include <QWidget>
-#include <QListWidget>
-#include <QTextEdit>
-#include <QMenuBar>
-#include <QMenu>
-#include <QGridLayout>
-#include <QLabel>
-#include <QtCharts>
+#include "qtHeader.h"
 
 class MainWindow : public QMainWindow
 {
@@ -29,5 +19,3 @@ private:
 
     void SetGUI();
 };
-
-#endif // MAINWINDOW_H

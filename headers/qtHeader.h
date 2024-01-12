@@ -1,0 +1,13 @@
+#pragma once
+#include <QApplication>
+#include <QMainWindow>
+#include <QWidget>
+#include <QListWidget>
+#include <QTextEdit>
+#include <QMenuBar>
+#include <QMenu>
+#include <QGridLayout>
+#include <QLabel>
+#include <QtCharts>
+#include <QPushButton>
+#include <QString>
