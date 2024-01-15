@@ -11,3 +11,4 @@
 #include <QtCharts>
 #include <QPushButton>
 #include <QString>
+#include <QTabWidget>
