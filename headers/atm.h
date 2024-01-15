@@ -6,6 +6,7 @@ class AtmPressureSensor : public PressureSensor {
     static double stdDeviation; //deviazione standard
     static double meanPoisson;  //numero medio di eventi improvvisi per unità di tempo
     public:
-    AtmPressureSensor(string, vector<Data>, double =0);
+    AtmPressureSensor(string, double =0);
     void generate() override;
+    string classSensor() const override;
 };

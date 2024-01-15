@@ -1,3 +1,3 @@
 #include "../headers/pressure.h"
 
-PressureSensor::PressureSensor(string n, vector<Data> v, double pressure, double th) : Sensor(n, v, pressure, th) {}
+PressureSensor::PressureSensor(string n, double pressure, double th) : Sensor(n, pressure, th) {}

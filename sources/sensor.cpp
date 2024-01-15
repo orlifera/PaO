@@ -1,6 +1,6 @@
 #include "../headers/sensor.h"
 
-Sensor::Sensor(string n, /*string c*/ vector<Data> v, double ex, double th) : name(n), infoArray(v), expectedValue(ex), threshold(th) {}
+Sensor::Sensor(string n, /*string c*/ double ex, double th) : name(n), expectedValue(ex), threshold(th) {}
 string Sensor::getName() const { return name; }
 // string Sensor::getCategory() const { return category; }
 vector<Data> Sensor::getArray() const { return infoArray; }
@@ -22,4 +22,31 @@ int Sensor::isInThreshold() const
     else if (infoArray[infoArray.size() - 1].getValue() < expectedValue - threshold)
         return -1;
     return 0;
+}
+string Sensor::stringSensor() const {
+    string jsonString = "";
+    jsonString += "\"sensorName\": \"" + getName() + "\",\n";
+    jsonString += "\"expectedValue\": \"" + to_string(getExpValue()) + "\",\n";
+    jsonString += "\"threshold\": \"" + to_string(getThreshold()) + "\",\n";
+    jsonString += classSensor();
+    jsonString += "\"data\": [\n";
+    for (auto it = infoArray.begin(); it != infoArray.end(); ++it) {
+        jsonString += "{\n";
+        jsonString += "\"value\": \"" + to_string(it->getValue()) + "\",\n";
+        jsonString += "\"time\": \"" + it->getTime().printTime() + "\"\n}";
+        if (it != infoArray.end()-1) jsonString += ",";
+        jsonString += "\n";
+    }
+    jsonString += "]\n";
+}
+void Sensor::saveSensor(string name) const {
+    ofstream outputfile(name+".json");
+    if(outputfile.is_open())
+    {
+        string jsonString = "{\n";
+        jsonString += stringSensor();
+        jsonString += "}";
+        outputfile << jsonString;
+    }
+    cerr << "Error on saving the sensor" << endl;;
 }

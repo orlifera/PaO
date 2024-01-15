@@ -6,6 +6,7 @@ class VinesTemperatureSensor : public TemperatureSensor {
     static double stdDeviation; //deviazione standard
     static double amplitude;    //ampiezza per la distribuzione sinusoidale
     public:
-    VinesTemperatureSensor(string, vector<Data>, double, double =0);
+    VinesTemperatureSensor(string, double, double =0);
     void generate() override;
+    string classSensor() const override;
 };

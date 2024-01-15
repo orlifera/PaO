@@ -4,6 +4,9 @@
 #include <vector>
 #include <cmath>
 #include <random>
+#include <fstream>
+#include <filesystem>
+#include <sstream>
 // #include <n1ohmann/json.hpp>
 // standard keywords utilizzate
 // funzioni matematiche
@@ -26,6 +29,10 @@ using std::endl;
 using std::ifstream;
 using std::ofstream;
 using std::ostream;
-// using std::setw;
+using std::filesystem::remove;
+using std::filesystem::path;
+using std::filesystem::exists;
 using std::string;
+using std::to_string;
 using std::vector;
+using std::stringstream;

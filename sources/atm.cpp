@@ -1,7 +1,7 @@
 #include "../headers/atm.h"
 
 //tutti i sensori per la pressione atmosferica hanno come valore atteso 1.0
-AtmPressureSensor::AtmPressureSensor(string n, vector<Data> v, double th) : PressureSensor(n, v, 1.0, th) {}
+AtmPressureSensor::AtmPressureSensor(string n, double th) : PressureSensor(n, 1.0, th) {}
 double AtmPressureSensor::stdDeviation = 2.0;
 double AtmPressureSensor::meanPoisson = 0.1;
 //funzione che genera dati secondo una distribuzione mista
@@ -30,3 +30,4 @@ void AtmPressureSensor::generate() {
         push(d);
     }
 }
+string AtmPressureSensor::classSensor() const { return "\"class\": \"atm-pressure\",\n"; }

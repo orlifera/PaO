@@ -6,6 +6,7 @@ class MustTemperatureSensor : public TemperatureSensor {
     double timer;        //timer di fermentazione
     static double range; //deviazione standard
     public:
-    MustTemperatureSensor(string, vector<Data>, double, double, double =0);
+    MustTemperatureSensor(string, double, double, double =0);
     void generate() override;
+    string classSensor() const override;
 };

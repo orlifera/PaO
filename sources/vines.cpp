@@ -1,7 +1,7 @@
 #include "../headers/vines.h"
 
 //tutti i sensori per la temperatura nelle vigne non sono a contatto
-VinesTemperatureSensor::VinesTemperatureSensor(string n, vector<Data> v, double temp, double th) : TemperatureSensor(n, v, false, temp, th) {}
+VinesTemperatureSensor::VinesTemperatureSensor(string n, double temp, double th) : TemperatureSensor(n, false, temp, th) {}
 double VinesTemperatureSensor::amplitude = 5.0;
 double VinesTemperatureSensor::stdDeviation = 3.0;
 //funzione che genera dati secondo una distribuzione sinusoidale
@@ -22,4 +22,9 @@ void VinesTemperatureSensor::generate() {
         d.setValue(temperature);
         push(d);
     }
+}
+string VinesTemperatureSensor::classSensor() const {
+    string jsonString = "\"class\": \"vines-temperature\",\n";
+    jsonString += "\"contact\": \"false\",\n";
+    return jsonString; 
 }

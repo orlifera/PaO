@@ -5,6 +5,7 @@ class WineryTemperatureSensor : public TemperatureSensor {
     private:
     static double range; //deviazione standard
     public:
-    WineryTemperatureSensor(string, vector<Data>, double, double =0);
+    WineryTemperatureSensor(string, double, double =0);
     void generate() override;
+    string classSensor() const override;
 };

@@ -2,5 +2,5 @@
 #include "sensor.h"
 class PressureSensor : public Sensor {
     public:
-    PressureSensor(string, vector<Data>, double, double);
+    PressureSensor(string, double, double);
 };

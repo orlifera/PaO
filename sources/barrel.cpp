@@ -1,11 +1,11 @@
 #include "../headers/barrel.h"
 
-BarrelSensor::BarrelSensor(string n, vector<Data> v, double pressure, double th) : PressureSensor(n,v,pressure,th) {}
-double BarrelSensor::stdDeviation = 0.5;
+BarrelPressureSensor::BarrelPressureSensor(string n, double pressure, double th) : PressureSensor(n,pressure,th) {}
+double BarrelPressureSensor::stdDeviation = 0.5;
 //funzione che genera dati secondo una distribuzione normale
 //questi dati vengono sommati al valore della pressione attesa
 //cioè dati che devono rimanere intorno al valore desiderato
-void BarrelSensor::generate() {
+void BarrelPressureSensor::generate() {
     random_device rd;
     default_random_engine generator(rd());
     normal_distribution<double> distribution(0.0,stdDeviation);
@@ -19,3 +19,4 @@ void BarrelSensor::generate() {
         push(d);
     }
 }
+string BarrelPressureSensor::classSensor() const { return "\"class\": \"barrel-pressure\",\n"; }

@@ -9,4 +9,5 @@ class Time {
     unsigned int Hour() const;
     unsigned int Mins() const;
     unsigned int Secs() const;
+    string printTime() const;
 };

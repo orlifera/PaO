@@ -5,6 +5,7 @@ class SoilHumiditySensor : public HumiditySensor {
     private:
     static double logStdDeviation; //logaritmo della deviazione standard
     public:
-    SoilHumiditySensor(string, vector<Data>, double, double =0);
+    SoilHumiditySensor(string, double, double =0);
     void generate() override;
+    string classSensor() const override;
 };

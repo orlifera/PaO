@@ -1,7 +1,7 @@
 #include "../headers/air.h"
 
 //tutti i sensori per l'umidità dell'aria sono capacitativi
-AirHumiditySensor::AirHumiditySensor(string n, vector<Data> v, double humidity, double th) : HumiditySensor(n, v, true, humidity, th) {}
+AirHumiditySensor::AirHumiditySensor(string n, double humidity, double th) : HumiditySensor(n, true, humidity, th) {}
 double AirHumiditySensor::alpha = 5.0;
 double AirHumiditySensor::beta = 2.0;
 //funzione che riceve alpha, beta e un generatore randomico
@@ -30,4 +30,9 @@ void AirHumiditySensor::generate() {
         d.setValue(humidity);
         push(d);
     }
+}
+string AirHumiditySensor::classSensor() const {
+    string jsonString = "\"class\": \"air-humidity\",\n";
+    jsonString += "\"capacitative\": \"true\",\n";
+    return jsonString; 
 }

@@ -1,5 +1,12 @@
 #pragma once
 #include "sensor.h"
+#include "atm.h"
+#include "air.h"
+#include "barrel.h"
+#include "must.h"
+#include "soil.h"
+#include "vines.h"
+#include "winery.h"
 class Group
 {
 private:
@@ -7,7 +14,7 @@ private:
     vector<Sensor *> sensors;
 
 public:
-    Group(string, vector<Sensor *>);
+    Group(string);
     string getGroupName() const;
     vector<Sensor *> getSensors() const;
     void addSensor(Sensor *);
@@ -16,5 +23,7 @@ public:
     void removeSensor(int);
     Sensor *find(string) const;
     void renameGroup(string);
+    void saveGroup(const string&) const;
+    bool loadGroup();
     // Group& operator=(const Group&);
 };

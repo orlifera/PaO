@@ -1,7 +1,7 @@
 #include "../headers/must.h"
 
 //tutti i sensori di temperatura del mosto sono a contatto
-MustTemperatureSensor::MustTemperatureSensor(string n, vector<Data> v, double temp, double t, double th) : TemperatureSensor(n, v, true, temp, th), timer(t) {
+MustTemperatureSensor::MustTemperatureSensor(string n, double temp, double t, double th) : TemperatureSensor(n, true, temp, th), timer(t) {
     if (t < 0) timer = 0.0;
     if (t > 24) timer = 24.0;
 }
@@ -22,4 +22,9 @@ void MustTemperatureSensor::generate() {
         d.setValue(temperature);
         push(d);
     }
+}
+string MustTemperatureSensor::classSensor() const {
+    string jsonString = "\"class\": \"must-temperature\",\n";
+    jsonString += "\"contact\": \"true\",\n";
+    return jsonString; 
 }

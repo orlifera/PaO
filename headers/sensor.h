@@ -10,7 +10,7 @@ private:
     double expectedValue;   // valore atteso dallo specifico sensore
     double threshold;       // soglia
 public:
-    Sensor(string, /*string,*/ vector<Data>, double, double = 0);
+    Sensor(string, /*string,*/ double, double = 0);
     Data getInfo(int) const;       // ritorna dato fornendo la posizione
     string getName() const;        // ritorna nome
     string getCategory() const;    // ritorna categoria
@@ -23,6 +23,9 @@ public:
     void renameSensor(string);     // rinomina il sensore
     // controlla che l'ultimo dato del sensore sia all'interno della soglia
     int isInThreshold() const;
-    void push(Data &);           // permette il push di un Data in infoArray (privato)
+    void push(Data &);             // permette il push di un Data in infoArray (privato)
+    string stringSensor() const;   // ritorna campi dati sensori
+    virtual string classSensor() const = 0;
+    void saveSensor(string) const; // salva sensore
     virtual ~Sensor() = default; // distruttore di default virtuale
 };

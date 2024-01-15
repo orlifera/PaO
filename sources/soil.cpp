@@ -1,7 +1,7 @@
 #include "../headers/soil.h"
 
 //tutti i sensori per l'umidità del terreno non sono capacitativi
-SoilHumiditySensor::SoilHumiditySensor(string n, vector<Data> v, double humidity, double th) : HumiditySensor(n, v, false, humidity, th) {}
+SoilHumiditySensor::SoilHumiditySensor(string n, double humidity, double th) : HumiditySensor(n, false, humidity, th) {}
 double SoilHumiditySensor::logStdDeviation = 0.5;
 //funzione che genera dati secondo una distribuzione log-normale
 //questo perché la distribuzione log-normale descrive bene
@@ -20,4 +20,9 @@ void SoilHumiditySensor::generate() {
         d.setValue(humidity);
         push(d);
     }
+}
+string SoilHumiditySensor::classSensor() const {
+    string jsonString = "\"class\": \"soil-humidity\",\n";
+    jsonString += "\"capacitative\": \"false\",\n";
+    return jsonString; 
 }

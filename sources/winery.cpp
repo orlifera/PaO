@@ -1,7 +1,7 @@
 #include "../headers/winery.h"
 
 //tutti i sensori di temperatura di una cantina non sono a contatto
-WineryTemperatureSensor::WineryTemperatureSensor(string n, vector<Data> v, double temp, double th) : TemperatureSensor(n, v, false, temp, th) {}
+WineryTemperatureSensor::WineryTemperatureSensor(string n, double temp, double th) : TemperatureSensor(n, false, temp, th) {}
 double WineryTemperatureSensor::range = 0.5;
 //funzione che genera dati seocndo una distribuzione uniforme
 void WineryTemperatureSensor::generate() {
@@ -19,4 +19,9 @@ void WineryTemperatureSensor::generate() {
         d.setValue(temperature);
         push(d);
     }
+}
+string WineryTemperatureSensor::classSensor() const {
+    string jsonString = "\"class\": \"winery-temperature\",\n";
+    jsonString += "\"contact\": \"false\",\n";
+    return jsonString; 
 }
