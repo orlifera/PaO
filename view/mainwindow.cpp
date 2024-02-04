@@ -1,5 +1,6 @@
 #include "../headers/mainwindow.h"
 #include "../headers/sensorButton.h"
+#include "../headers/tabHandler.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,7 +32,7 @@ void MainWindow::SetGUI()
 
     searchBar = new QLineEdit(sideMenu);
     searchBar->setPlaceholderText("Search...");
-    searchBar->setStyleSheet("QLineEdit { height: 20px; }");
+    searchBar->setStyleSheet("QLineEdit { height: 100px; }");
 
     // Create a separator
     QFrame *line = new QFrame(sideMenu);
@@ -46,18 +47,20 @@ void MainWindow::SetGUI()
     sideMenuLayout->addWidget(line);
     sideMenuLayout->addWidget(Title);
 
-    // Create a tab widget
-    QWidget *widget1 = new QWidget();
-    QWidget *widget2 = new QWidget();
-    // set colors for the tab widgets
-    widget1->setStyleSheet("background-color: #000000;");
-    widget2->setStyleSheet("background-color: #ffffff;");
+    // // Create a tab widget
+    // QWidget *widget1 = new QWidget();
+    // QWidget *widget2 = new QWidget();
+    // // set colors for the tab widgets
+    // widget1->setStyleSheet("background-color: #000000;");
+    // widget2->setStyleSheet("background-color: #ffffff;");
 
-    QTabWidget *tabWidget = new QTabWidget(this);
-    tabWidget->addTab(widget1, "Tab 1");
-    tabWidget->addTab(widget2, "Tab 2");
-    tabWidget->setTabsClosable(true); // Enable closable tabs
-    connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+    // QTabWidget *tabWidget = new QTabWidget(this);
+    // tabWidget->addTab(widget1, "Tab 1");
+    // tabWidget->addTab(widget2, "Tab 2");
+    // tabWidget->setTabsClosable(true); // Enable closable tabs
+    // connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+
+    tabWidget = new TabHandler(this);
 
     sideMenuLayout->addWidget(sensors);
 
@@ -84,7 +87,7 @@ void MainWindow::SetGUI()
     open->addAction(tr("Open Group"), this, SLOT(openGroup()));
 
     // Set the menu bar
-    setMenuBar(topMenu);
+    // setMenuBar(topMenu);
     mainLayout->setColumnStretch(0, 20); // Set the stretch factor for the first column to 30
     mainLayout->setColumnStretch(1, 80); // Set the stretch factor for the second column to 70
 

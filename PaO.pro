@@ -31,6 +31,7 @@ HEADERS += headers/air.h \
            headers/qtHeader.h \
            headers/sensor.h \
            headers/sensorButton.h \
+           headers/tabHandler.h \
            headers/soil.h \
            headers/temperature.h \
            headers/time.h \
@@ -52,5 +53,6 @@ SOURCES += main.cpp \
            sources/time.cpp \
            sources/vines.cpp \
            sources/winery.cpp \
+           view/tabHandler.cpp \
            view/mainwindow.cpp \
            view/sensorButton.cpp
