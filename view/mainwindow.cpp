@@ -76,12 +76,10 @@ void MainWindow::SetGUI()
     QMenu *file = topMenu->addMenu(tr("&New"));
 
     // Add actions to the file menu
-    file->addAction(tr("New Sensor"), this, SLOT(newSensor()));
-    file->addAction(tr("New Group"), this, SLOT(newGroup()));
+    file->addAction(tr("New Group"), this, SLOT(Group::newGroup()));
 
     QMenu *open = topMenu->addMenu(tr("&Open"));
-    open->addAction(tr("Open Sensor"), this, SLOT(openSensor()));
-    open->addAction(tr("Open Group"), this, SLOT(openGroup()));
+    file->addAction(tr("Open Group"), this, SLOT(Group::load()));
 
     // Set the menu bar
     setMenuBar(topMenu);
