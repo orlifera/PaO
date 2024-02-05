@@ -17,7 +17,7 @@ private:
     double expectedValue;   // valore atteso dallo specifico sensore
     double threshold;       // soglia
 public:
-    Sensor(string, /*string,*/ double, double = 0);
+    Sensor(string, /*string,*/double, double);
     // ritorna dato fornendo la posizione
     Data getInfo(int) const;       
     // ritorna nome
