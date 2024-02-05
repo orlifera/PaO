@@ -1,5 +1,4 @@
 #pragma once
-#include "item.h"
 #include "sensor.h"
 #include "atm.h"
 #include "air.h"
@@ -8,7 +7,7 @@
 #include "soil.h"
 #include "vines.h"
 #include "winery.h"
-class Group : public Item
+class Group
 {
 private:
     string groupName;
@@ -23,8 +22,8 @@ public:
     void removeSensor(string);
     void removeSensor(int);
     Sensor *find(string) const;
-    void rename(string) override;
-    void save(string) const override;
-    bool loadGroup();
+    void rename(string);
+    void save(string) const;
+    static Group load(string);
     // Group& operator=(const Group&);
 };

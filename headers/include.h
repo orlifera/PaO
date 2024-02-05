@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QByteArray>
 #include <fstream>
 // #include <sstream>
 // standard keywords utilizzate
@@ -31,6 +32,7 @@ using std::endl;
 using std::ifstream;
 using std::ofstream;
 using std::ostream;
+using std::istreambuf_iterator;
 using std::filesystem::remove;
 using std::filesystem::exists;
 using std::string;

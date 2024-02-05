@@ -41,7 +41,7 @@ void Group::save(string filename) const {
         group["groupName"] = QString::fromStdString(getGroupName());
         QJsonArray sensorArray;
         for (auto it = sensors.begin(); it != sensors.end(); ++it) {
-            QJsonObject sensor = (*it)->saveSensor();
+            QJsonObject sensor = (*it)->writeSensor();
             sensorArray.append(sensor);
         }
         group["sensors"] = sensorArray;
@@ -53,6 +53,82 @@ void Group::save(string filename) const {
     }
     else {
         cerr << "Error on saving the sensor" << endl;
+    }
+}
+Group Group::load(string filename) {
+    ifstream inFile(filename);
+    if (inFile.is_open()) {
+        string content;
+        char ch;
+        while (inFile.get(ch)) {
+            content.push_back(ch);
+        }
+        QJsonDocument jsonDoc =QJsonDocument::fromJson(QByteArray::fromStdString(content));
+        if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+            QJsonObject groupObj = jsonDoc.object();
+            string groupName = groupObj["groupName"].toString().toStdString();
+            Group g(groupName);
+            QJsonArray sensorArray = groupObj["sensors"].toArray();
+            for (auto s: sensorArray) {
+                QJsonObject sensorObj = s.toObject();
+                string sensorName = sensorObj["sensorName"].toString().toStdString();
+                double expected = sensorObj["expected value"].toDouble();
+                double thr = sensorObj["threshold"].toDouble();
+                string className = sensorObj["class"].toString().toStdString();
+                vector<Data> sensorV;
+                QJsonArray dataArray = sensorObj["info"].toArray();
+                for (auto entry: dataArray) {
+                    QJsonObject dataObj = entry.toObject();
+                    Time t(dataObj["time"].toInt());
+                    double val = dataObj["value"].toDouble();
+                    sensorV.push_back(Data(val,t));
+                }
+                inFile.close();
+                if (className == "air-humidity") {
+                    AirHumiditySensor a(sensorName,expected,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+                if (className == "atm-pressure") {
+                    AtmPressureSensor a(sensorName,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+                if (className == "barrel-pressure") {
+                    BarrelPressureSensor a(sensorName,expected,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+                if (className == "must-temperature") {
+                    double timer = sensorObj["timer"].toDouble();
+                    MustTemperatureSensor a(sensorName,expected,timer,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+                if (className == "soil-humidity") {
+                    SoilHumiditySensor a(sensorName,expected,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+                if (className == "vines-temperature") {
+                    VinesTemperatureSensor a(sensorName,expected,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+                if (className == "winery-temperature") {
+                    WineryTemperatureSensor a(sensorName,expected,thr);
+                    a.push(sensorV);
+                    g.sensors.push_back(&a);
+                }
+            }
+            return g;
+        }
+        else {
+            cerr << "Error: unable to parse JSON file" << endl;
+        }
+    }
+    else {
+        cerr << "Unable to open file" << endl;
     }
 }
 // void Group::saveGroup(const string &filename) const {

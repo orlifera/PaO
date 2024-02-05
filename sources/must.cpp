@@ -25,9 +25,10 @@ void MustTemperatureSensor::generate() {
 }
 QJsonObject MustTemperatureSensor::classSensor() const {
     QString className = "must-temperature";
-    QString classInfo = "true";
+    QString classInfo = "true"; 
     QJsonObject classObj;
     classObj["class"] = className;
     classObj["contact"] = classInfo;
+    classObj["timer"] = timer;
     return classObj; 
 }
