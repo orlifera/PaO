@@ -1,4 +1,4 @@
-#include "../headers/mainwindow.h"
+#include "../headers/mainWindow.h"
 #include "../headers/sensorButton.h"
 #include "../headers/tabHandler.h"
 
@@ -47,20 +47,8 @@ void MainWindow::SetGUI()
     sideMenuLayout->addWidget(line);
     sideMenuLayout->addWidget(Title);
 
-    // // Create a tab widget
-    // QWidget *widget1 = new QWidget();
-    // QWidget *widget2 = new QWidget();
-    // // set colors for the tab widgets
-    // widget1->setStyleSheet("background-color: #000000;");
-    // widget2->setStyleSheet("background-color: #ffffff;");
-
-    // QTabWidget *tabWidget = new QTabWidget(this);
-    // tabWidget->addTab(widget1, "Tab 1");
-    // tabWidget->addTab(widget2, "Tab 2");
-    // tabWidget->setTabsClosable(true); // Enable closable tabs
-    // connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
-
     tabWidget = new TabHandler(this);
+    connect(tabWidget, &QTabWidget::currentChanged, this, &MainWindow::tabChanged);
 
     sideMenuLayout->addWidget(sensors);
 
@@ -88,44 +76,89 @@ void MainWindow::SetGUI()
 
     // Set the menu bar
     // setMenuBar(topMenu);
-    mainLayout->setColumnStretch(0, 20); // Set the stretch factor for the first column to 30
-    mainLayout->setColumnStretch(1, 80); // Set the stretch factor for the second column to 70
+    mainLayout->setColumnStretch(0, 20); // Set the stretch factor for the first column to 20
+    mainLayout->setColumnStretch(1, 80); // Set the stretch factor for the second column to 80
 
-    // vector<Sensor> sensorArray = {Sensor("Dio Bosco", "temperature", {Data(1, 2)}, 1, 2),
-    //                               Sensor("Dio Bosco", "temperature", {Data(1, 2)}, 1, 2),
-    //                               Sensor("Dio Bosco", "temperature", {Data(1, 2)}, 1, 2)};
+    // for (int i = 0; i < 30; ++i)
+    // {
+    //     // Create a QListWidgetItem with a fixed size
+    //     QListWidgetItem *item = new QListWidgetItem();
+    //     item->setSizeHint(QSize(100, 40)); // Adjust the size hint as needed
 
-    for (int i = 0; i < 30; ++i)
-    {
-        // Create a QListWidgetItem with a fixed size
-        QListWidgetItem *item = new QListWidgetItem();
-        item->setSizeHint(QSize(100, 40)); // Adjust the size hint as needed
+    //     // Create the custom SensorBtn
+    //     SensorBtn *sensorBtn = new SensorBtn();
 
-        // Create the custom SensorBtn
-        SensorBtn *sensorBtn = new SensorBtn();
+    //     // Set placeholder text
+    //     sensorBtn->setText(QString("Placeholder %1").arg(i + 1));
 
-        // Set placeholder text
-        sensorBtn->setText(QString("Placeholder %1").arg(i + 1));
+    //     // Set a default icon for the button
+    //     // Replace ":/path/to/icon.png" with the actual path to your icon resource
+    //     QIcon icon(":/path/to/icon.png");
+    //     sensorBtn->setIcon(icon);
+    //     sensorBtn->setIconSize(QSize(20, 20)); // Adjust size as needed
 
-        // Set a default icon for the button
-        // Replace ":/path/to/icon.png" with the actual path to your icon resource
-        QIcon icon(":/path/to/icon.png");
-        sensorBtn->setIcon(icon);
-        sensorBtn->setIconSize(QSize(20, 20)); // Adjust size as needed
+    //     // Add the button to the list
+    //     sensors->addItem(item);
+    //     sensors->setItemWidget(item, sensorBtn);
 
-        // Add the button to the list
-        sensors->addItem(item);
-        sensors->setItemWidget(item, sensorBtn);
-
-        // Connect the button's clicked signal to a slot, if needed
-        // connect(sensorBtn, &QPushButton::clicked, this, [this, i]()
-        //         {
-        //             // when the sensor button is clicked it should remove the display of the group and add teh display of the sensor clicked in the same place as the group info were displayed before
-        //         });
-    }
+    //     // Connect the button's clicked signal to a slot, if needed
+    //     // connect(sensorBtn, &QPushButton::clicked, this, [this, i]()
+    //     //         {
+    //     //             // when the sensor button is clicked it should remove the display of the group and add teh display of the sensor clicked in the same place as the group info were displayed before
+    //     //         });
+    // }
 
     // Set the layout for the central widget
     mainWidget->setLayout(mainLayout);
+}
+
+void MainWindow::tabChanged(int index)
+{
+    // Clear the existing list of buttons
+    sensors->clear();
+
+    // Add new buttons based on the current tab
+    switch (index)
+    {
+    case 0:
+        // Code to add buttons for Tab 1
+        // Example:
+        addButton("Button 1.1");
+        addButton("Button 1.2");
+        break;
+
+    case 1:
+        // Code to add buttons for Tab 2
+        // Example:
+        addButton("Button 2.1");
+        addButton("Button 2.2");
+        break;
+
+        // Add more cases for additional tabs as needed
+
+    default:
+        break;
+    }
+}
+
+void MainWindow::addButton(const QString &text)
+{
+    // Create a QListWidgetItem with a fixed size
+    QListWidgetItem *item = new QListWidgetItem();
+    item->setSizeHint(QSize(100, 40));
+
+    // Create the custom SensorBtn
+    SensorBtn *sensorBtn = new SensorBtn();
+    sensorBtn->setText(text);
+
+    // Set a default icon for the button
+    QIcon icon(":/path/to/icon.png");
+    sensorBtn->setIcon(icon);
+    sensorBtn->setIconSize(QSize(20, 20));
+
+    // Add the button to the list
+    sensors->addItem(item);
+    sensors->setItemWidget(item, sensorBtn);
 }
 
 void MainWindow::addTab()

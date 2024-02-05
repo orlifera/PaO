@@ -14,5 +14,12 @@ TabHandler::TabHandler(QWidget *parent) : QTabWidget(parent)
     this->addTab(widget1, "Tab 1");
     this->addTab(widget2, "Tab 2");
     this->setTabsClosable(true); // Enable closable tabs
-    // connect(this, &QTabWidget::tabCloseRequested, this, &TabHandler::closeTab);
+    connect(this, &QTabWidget::tabCloseRequested, this, &TabHandler::closeTab);
+}
+
+void TabHandler::closeTab(int index)
+{
+    QWidget *tabItem = this->widget(index);
+    this->removeTab(index);
+    delete tabItem;
 }

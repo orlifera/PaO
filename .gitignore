@@ -90,3 +90,6 @@ $RECYCLE.BIN/
 
 #vscode files
 .vscode/
+
+# makefile
+*Makefile

@@ -11,6 +11,8 @@ public:
     ~MainWindow();
 public slots:
     void filterList(const QString &query);
+private slots:
+    void tabChanged(int index);
 
 private:
     QListWidget *sensors;
@@ -22,6 +24,7 @@ private:
     // QtChartView *chartView;
 
     void SetGUI();
+    void addButton(const QString &text);
     void addTab();
     void closeTab(int index);
     // void filterList(const QString &query);
