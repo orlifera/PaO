@@ -28,6 +28,7 @@ using std::uniform_real_distribution;
 // keywords
 using std::cerr;
 using std::cout;
+using std::cin;
 using std::endl;
 using std::ifstream;
 using std::ofstream;

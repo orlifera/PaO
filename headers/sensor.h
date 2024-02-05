@@ -12,23 +12,41 @@ private:
     double threshold;       // soglia
 public:
     Sensor(string, /*string,*/ double, double = 0);
-    Data getInfo(int) const;       // ritorna dato fornendo la posizione
-    string getName() const;        // ritorna nome
-    vector<Data> getArray() const; // ritorna il vettore dati
-    double getExpValue() const;    // ritorna il valore atteso
-    double getThreshold() const;   // ritorna la soglia
-    void setExpValue(double);      // assegna nuovo valore atteso
-    void setThreshold(double);     // assegna nuova soglia
-    virtual void generate() = 0;   // metodo astratto per la generazione dei dati
-    void rename(string);     // rinomina il sensore
+    // ritorna dato fornendo la posizione
+    Data getInfo(int) const;       
+    // ritorna nome
+    string getName() const;        
+    // ritorna il vettore dati
+    vector<Data> getArray() const; 
+    // ritorna il valore atteso
+    double getExpValue() const;    
+    // ritorna la soglia
+    double getThreshold() const;   
+    // assegna nuovo valore atteso
+    void setExpValue(double);     
+    // assegna nuova soglia
+    void setThreshold(double);     
+    // metodo astratto per la generazione dei dati
+    virtual void generate() = 0;   
+    // rinomina il sensore
+    void rename(string);           
     // controlla che l'ultimo dato del sensore sia all'interno della soglia
     int isInThreshold() const;
-    void push(Data &);             // permette il push di un Data in infoArray (privato)
-    void push(vector<Data>);
+    // permette il push di un Data in infoArray (privato)
+    void push(Data &);             
+    // permette il push di un vettore di dati ovvero l'assegnazione
+    void push(vector<Data>);       
     // string stringSensor() const;   // ritorna campi dati sensori
-    virtual QJsonObject classSensor() const = 0;
-    QJsonObject writeSensor() const;
-    void save(string) const; // salva sensore
+    // ritorna il nome della classe polimorficamente
+    virtual QJsonObject classSensor() const = 0; 
+    // scrive su un oggetto json le caratteristiche del sensore
+    QJsonObject writeSensor() const;             
+    // salva sensore
+    void save(string) const;   
+    // carica sensore    
     static Sensor* load(string);
-    virtual ~Sensor() = default; // distruttore di default virtuale
+    // crea nuovo sensore
+    static Sensor* newSensor();
+    // distruttore di default virtuale
+    virtual ~Sensor() = default; 
 };

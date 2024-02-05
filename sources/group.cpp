@@ -131,6 +131,21 @@ Group Group::load(string filename) {
         cerr << "Unable to open file" << endl;
     }
 }
+void Group::loadSensor() {
+    cout << "Name of the file: ";
+    string filename;
+    cin >> filename;
+    addSensor(Sensor::load(filename));
+}
+Group Group::newGroup() {
+    cout << "Name of the new group: ";
+    string name;
+    cin >> name;
+    return Group(name);
+}
+void Group::newSensor() {
+    addSensor(Sensor::newSensor());
+}
 // void Group::saveGroup(const string &filename) const {
 //     string file = filename + ".json";
 //     if (exists(file)) remove(file);

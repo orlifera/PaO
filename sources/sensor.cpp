@@ -141,6 +141,50 @@ Sensor* Sensor::load(string filename) {
         cerr << "Unable to open file" << endl;
     }
 }
+Sensor* Sensor::newSensor() {
+    cout << "Name of the new sensor: ";
+    string name;
+    cin >> name;
+    cout << "\nPossible classe:\n\tair-humidity\n\tsoil-humidity\n\tatm-pressure\n\tbarrel-pressure\n\tmust-temperature\n\tvines-temperature\n\twinery-temperature" << endl;
+    cout << "Type of sensor: ";
+    string sensorclass;
+    cin >> sensorclass;
+    double expected;
+    if (sensorclass == "atm-pressure") {
+        expected = 1.0;
+    }
+    else {
+        cout << "\nExpected value: ";
+        cin >> expected;
+    }
+    cout << "\nThreshold: ";
+    double thr;
+    cin >> thr;
+    if (sensorclass == "air-humidity") {
+        return new AirHumiditySensor(name,expected,thr);
+    }
+    if (sensorclass == "atm-pressure") {
+        return new AtmPressureSensor(name,thr);
+    }
+    if (sensorclass == "barrel-pressure") {
+        return new BarrelPressureSensor(name,expected,thr);
+    }
+    if (sensorclass == "must-temperature") {
+        double timer;
+        cout << "\nTimer: ";
+        cin >> timer;
+        return new MustTemperatureSensor(name,expected,timer,thr);
+    }
+    if (sensorclass == "soil-humidity") {
+        return new SoilHumiditySensor(name,expected,thr);
+    }
+    if (sensorclass == "vines-temperature") {
+        return new VinesTemperatureSensor(name,expected,thr);
+    }
+    if (sensorclass == "winery-temperature") {
+        return new WineryTemperatureSensor(name,expected,thr);
+    }
+}
 // string Sensor::stringSensor() const {
 //     string jsonString = "";
 //     jsonString += "\"sensorName\": \"" + getName() + "\",\n";
