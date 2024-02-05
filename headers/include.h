@@ -4,10 +4,12 @@
 #include <vector>
 #include <cmath>
 #include <random>
-#include <fstream>
 #include <filesystem>
-#include <sstream>
-// #include <n1ohmann/json.hpp>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <fstream>
+// #include <sstream>
 // standard keywords utilizzate
 // funzioni matematiche
 using std::acos; // arcocoseno
@@ -30,9 +32,9 @@ using std::ifstream;
 using std::ofstream;
 using std::ostream;
 using std::filesystem::remove;
-using std::filesystem::path;
 using std::filesystem::exists;
 using std::string;
 using std::to_string;
 using std::vector;
-using std::stringstream;
+// using std::stringstream;
+// using std::setw;

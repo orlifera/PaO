@@ -23,8 +23,11 @@ void VinesTemperatureSensor::generate() {
         push(d);
     }
 }
-string VinesTemperatureSensor::classSensor() const {
-    string jsonString = "\"class\": \"vines-temperature\",\n";
-    jsonString += "\"contact\": \"false\",\n";
-    return jsonString; 
+QJsonObject VinesTemperatureSensor::classSensor() const {
+    QString className = "vines-temperature";
+    QString classInfo = "false";
+    QJsonObject classObj;
+    classObj["class"] = className;
+    classObj["contact"] = classInfo;
+    return classObj; 
 }

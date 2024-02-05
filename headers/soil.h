@@ -7,5 +7,5 @@ class SoilHumiditySensor : public HumiditySensor {
     public:
     SoilHumiditySensor(string, double, double =0);
     void generate() override;
-    string classSensor() const override;
+    QJsonObject classSensor() const override;
 };

@@ -30,4 +30,9 @@ void AtmPressureSensor::generate() {
         push(d);
     }
 }
-string AtmPressureSensor::classSensor() const { return "\"class\": \"atm-pressure\",\n"; }
+QJsonObject AtmPressureSensor::classSensor() const {
+    QString className = "air-pressure";
+    QJsonObject classObj;
+    classObj["class"] = className;
+    return classObj; 
+}

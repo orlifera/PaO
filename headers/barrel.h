@@ -7,5 +7,5 @@ class BarrelPressureSensor : public PressureSensor {
     public:
     BarrelPressureSensor(string, double, double =0);
     void generate() override;
-    string classSensor() const override;
+    QJsonObject classSensor() const override;
 };

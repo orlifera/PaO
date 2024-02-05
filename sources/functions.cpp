@@ -1,5 +1,5 @@
 #include "../headers/functions.h"
-/*
+
 void saveWithName(const Group &group, const string &filename)
 {
     json jsonData;
@@ -52,4 +52,3 @@ void saveWithName(const Group &group, const string &filename)
     // insert data in file with indentation
     outFile << setw(4) << jsonData << endl;
 }
-*/

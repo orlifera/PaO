@@ -1,7 +1,8 @@
 #pragma once
+#include "item.h"
 #include "data.h"
 // sensore generico
-class Sensor
+class Sensor : public Item
 {
 private:
     string name; // nome che lo identifica
@@ -13,19 +14,19 @@ public:
     Sensor(string, /*string,*/ double, double = 0);
     Data getInfo(int) const;       // ritorna dato fornendo la posizione
     string getName() const;        // ritorna nome
-    string getCategory() const;    // ritorna categoria
     vector<Data> getArray() const; // ritorna il vettore dati
     double getExpValue() const;    // ritorna il valore atteso
     double getThreshold() const;   // ritorna la soglia
     void setExpValue(double);      // assegna nuovo valore atteso
     void setThreshold(double);     // assegna nuova soglia
     virtual void generate() = 0;   // metodo astratto per la generazione dei dati
-    void renameSensor(string);     // rinomina il sensore
+    void rename(string) override;     // rinomina il sensore
     // controlla che l'ultimo dato del sensore sia all'interno della soglia
     int isInThreshold() const;
     void push(Data &);             // permette il push di un Data in infoArray (privato)
-    string stringSensor() const;   // ritorna campi dati sensori
-    virtual string classSensor() const = 0;
-    void saveSensor(string) const; // salva sensore
+    // string stringSensor() const;   // ritorna campi dati sensori
+    virtual QJsonObject classSensor() const = 0;
+    QJsonObject saveSensor() const;
+    void save(string) const override; // salva sensore
     virtual ~Sensor() = default; // distruttore di default virtuale
 };

@@ -10,5 +10,5 @@ class AirHumiditySensor : public HumiditySensor {
     void generate() override;
     //funzione statica che crea distribuzione beta
     static double beta_distribution(double, double, default_random_engine&);
-    string classSensor() const override;
+    QJsonObject classSensor() const override;
 };

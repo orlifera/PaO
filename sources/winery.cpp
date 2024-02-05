@@ -20,8 +20,11 @@ void WineryTemperatureSensor::generate() {
         push(d);
     }
 }
-string WineryTemperatureSensor::classSensor() const {
-    string jsonString = "\"class\": \"winery-temperature\",\n";
-    jsonString += "\"contact\": \"false\",\n";
-    return jsonString; 
+QJsonObject WineryTemperatureSensor::classSensor() const {
+    QString className = "winery-temperature";
+    QString classInfo = "false";
+    QJsonObject classObj;
+    classObj["class"] = className;
+    classObj["contact"] = classInfo;
+    return classObj; 
 }

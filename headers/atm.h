@@ -8,5 +8,5 @@ class AtmPressureSensor : public PressureSensor {
     public:
     AtmPressureSensor(string, double =0);
     void generate() override;
-    string classSensor() const override;
+    QJsonObject classSensor() const override;
 };
