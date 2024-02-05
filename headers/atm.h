@@ -7,6 +7,6 @@ class AtmPressureSensor : public PressureSensor {
     static double meanPoisson;  //numero medio di eventi improvvisi per unità di tempo
     public:
     AtmPressureSensor(string, double =0);
-    void generate() override;
-    QJsonObject classSensor() const override;
+    void generate();
+    QJsonObject classSensor() const;
 };

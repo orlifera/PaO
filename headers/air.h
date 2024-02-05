@@ -7,8 +7,8 @@ class AirHumiditySensor : public HumiditySensor {
     static double beta;  //parametro per la distribuzione beta
     public:
     AirHumiditySensor(string, double, double =0);
-    void generate() override;
+    void generate();
     //funzione statica che crea distribuzione beta
     static double beta_distribution(double, double, default_random_engine&);
-    QJsonObject classSensor() const override;
+    QJsonObject classSensor() const;
 };

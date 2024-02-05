@@ -1,6 +1,12 @@
 #pragma once
 #include "data.h"
-#include "group.h"
+#include "atm.h"
+#include "air.h"
+#include "barrel.h"
+#include "must.h"
+#include "soil.h"
+#include "vines.h"
+#include "winery.h"
 // sensore generico
 class Sensor
 {

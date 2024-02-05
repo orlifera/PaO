@@ -6,6 +6,6 @@ class SoilHumiditySensor : public HumiditySensor {
     static double logStdDeviation; //logaritmo della deviazione standard
     public:
     SoilHumiditySensor(string, double, double =0);
-    void generate() override;
-    QJsonObject classSensor() const override;
+    void generate();
+    QJsonObject classSensor() const;
 };
