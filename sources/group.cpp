@@ -31,45 +31,54 @@ Sensor *Group::find(string n) const
     }
 }
 void Group::rename(string n) { groupName = n; }
-void Group::save(string filename) const {
-    if (exists(filename)) remove(filename);
+void Group::save(string path) const
+{
+    if (exists(path))
+        remove(path);
     // new file "filename"
-    ofstream outFile(filename);
+    ofstream outFile(path);
     if (outFile.is_open())
     {
         QJsonObject group;
         group["groupName"] = QString::fromStdString(getGroupName());
         QJsonArray sensorArray;
-        for (auto it = sensors.begin(); it != sensors.end(); ++it) {
+        for (auto it = sensors.begin(); it != sensors.end(); ++it)
+        {
             QJsonObject sensor = (*it)->writeSensor();
             sensorArray.append(sensor);
         }
         group["sensors"] = sensorArray;
         // pushes the group in the jsonDocument
         QJsonDocument jsonDoc(group);
-        //insert data in file
+        // insert data in file
         outFile << jsonDoc.toJson().toStdString();
         outFile.close();
     }
-    else {
+    else
+    {
         cerr << "Error on saving the sensor" << endl;
     }
 }
-Group Group::load(string filename) {
+Group Group::load(string filename)
+{
     ifstream inFile(filename);
-    if (inFile.is_open()) {
+    if (inFile.is_open())
+    {
         string content;
         char ch;
-        while (inFile.get(ch)) {
+        while (inFile.get(ch))
+        {
             content.push_back(ch);
         }
-        QJsonDocument jsonDoc =QJsonDocument::fromJson(QByteArray::fromStdString(content));
-        if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray::fromStdString(content));
+        if (!jsonDoc.isNull() && jsonDoc.isObject())
+        {
             QJsonObject groupObj = jsonDoc.object();
             string groupName = groupObj["groupName"].toString().toStdString();
             Group g(groupName);
             QJsonArray sensorArray = groupObj["sensors"].toArray();
-            for (auto s: sensorArray) {
+            for (auto s : sensorArray)
+            {
                 QJsonObject sensorObj = s.toObject();
                 string sensorName = sensorObj["sensorName"].toString().toStdString();
                 double expected = sensorObj["expected value"].toDouble();
@@ -77,73 +86,85 @@ Group Group::load(string filename) {
                 string className = sensorObj["class"].toString().toStdString();
                 vector<Data> sensorV;
                 QJsonArray dataArray = sensorObj["info"].toArray();
-                for (auto entry: dataArray) {
+                for (auto entry : dataArray)
+                {
                     QJsonObject dataObj = entry.toObject();
                     Time t(dataObj["time"].toInt());
                     double val = dataObj["value"].toDouble();
-                    sensorV.push_back(Data(val,t));
+                    sensorV.push_back(Data(val, t));
                 }
                 inFile.close();
-                if (className == "air-humidity") {
-                    AirHumiditySensor a(sensorName,expected,thr);
+                if (className == "air-humidity")
+                {
+                    AirHumiditySensor a(sensorName, expected, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
-                if (className == "atm-pressure") {
-                    AtmPressureSensor a(sensorName,thr);
+                if (className == "atm-pressure")
+                {
+                    AtmPressureSensor a(sensorName, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
-                if (className == "barrel-pressure") {
-                    BarrelPressureSensor a(sensorName,expected,thr);
+                if (className == "barrel-pressure")
+                {
+                    BarrelPressureSensor a(sensorName, expected, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
-                if (className == "must-temperature") {
+                if (className == "must-temperature")
+                {
                     double timer = sensorObj["timer"].toDouble();
-                    MustTemperatureSensor a(sensorName,expected,timer,thr);
+                    MustTemperatureSensor a(sensorName, expected, timer, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
-                if (className == "soil-humidity") {
-                    SoilHumiditySensor a(sensorName,expected,thr);
+                if (className == "soil-humidity")
+                {
+                    SoilHumiditySensor a(sensorName, expected, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
-                if (className == "vines-temperature") {
-                    VinesTemperatureSensor a(sensorName,expected,thr);
+                if (className == "vines-temperature")
+                {
+                    VinesTemperatureSensor a(sensorName, expected, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
-                if (className == "winery-temperature") {
-                    WineryTemperatureSensor a(sensorName,expected,thr);
+                if (className == "winery-temperature")
+                {
+                    WineryTemperatureSensor a(sensorName, expected, thr);
                     a.push(sensorV);
                     g.sensors.push_back(&a);
                 }
             }
             return g;
         }
-        else {
+        else
+        {
             cerr << "Error: unable to parse JSON file" << endl;
         }
     }
-    else {
+    else
+    {
         cerr << "Unable to open file" << endl;
     }
 }
-void Group::loadSensor() {
+void Group::loadSensor()
+{
     cout << "Name of the file: ";
     string filename;
     cin >> filename;
     addSensor(Sensor::load(filename));
 }
-Group Group::newGroup() {
-    cout << "Name of the new group: ";
-    string name;
-    cin >> name;
-    return Group(name);
-}
-void Group::newSensor() {
+// Group Group::newGroup() {
+//     cout << "Name of the new group: ";
+//     string name;
+//     cin >> name;
+//     return Group(name);
+// }
+void Group::newSensor()
+{
     addSensor(Sensor::newSensor());
 }
 // void Group::saveGroup(const string &filename) const {
@@ -204,7 +225,7 @@ void Group::newSensor() {
 //                     else if (className == "must-temperature") sensors.push_back(&MustTemperatureSensor(sensorName,expV,thr));
 //                     else if (className == "soil-humidity") sensors.push_back(&SoilHumiditySensor(sensorName,expV,thr));
 //                     else if (className == "vines-temperature") sensors.push_back(&VinesTemperatureSensor(sensorName,expV,thr));
-//                     else if (className == "winery-temperature") sensors.push_back(&WineryTemperatureSensor(sensorName,expV,thr)); 
+//                     else if (className == "winery-temperature") sensors.push_back(&WineryTemperatureSensor(sensorName,expV,thr));
 //                     size_t valuePos = jsonString.find("\"value\":");
 //                     size_t valueStartPos = jsonString.find("\"", valuePos+1)+1;
 //                     size_t valueEndPos = jsonString.find("\"", valueStartPos);
@@ -214,11 +235,11 @@ void Group::newSensor() {
 //                     size_t timeHourPos = jsonString.find(":", timeStartPos+1);
 //                     size_t timeMinPos = jsonString.find(":", timeHourPos+1);
 //                     size_t timeEndPos = jsonString.find("\"", timeStartPos);
-//                     unsigned int h = stoi(jsonString.substr(timeStartPos, timeHourPos-timeStartPos)); 
-//                     unsigned int m = stoi(jsonString.substr(timeHourPos, timeMinPos-timeHourPos)); 
+//                     unsigned int h = stoi(jsonString.substr(timeStartPos, timeHourPos-timeStartPos));
+//                     unsigned int m = stoi(jsonString.substr(timeHourPos, timeMinPos-timeHourPos));
 //                     unsigned int s = stoi(jsonString.substr(timeMinPos, timeEndPos-timeMinPos));
 //                     sensors->infoArray.setValue(value);
-//                     sensors->infoArray.setTime(h,m,s);        
+//                     sensors->infoArray.setTime(h,m,s);
 //                 }
 //             }
 //         }

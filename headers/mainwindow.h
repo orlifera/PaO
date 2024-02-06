@@ -1,31 +1,21 @@
 #pragma once
 #include "include.h"
 #include "qtHeader.h"
+#include "group.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT;
 
+private:
+    QTabWidget *tabs;
+
 public:
     MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-public slots:
-    void filterList(const QString &query);
+    // public slots:
+    //     void filterList(const QString &query);
 private slots:
-    void tabChanged(int index);
-
-private:
-    QListWidget *sensors;
-    QTextEdit *sensorDisplay;
-    QMenuBar *topMenu;
-    QGridLayout *layout;
-    QTabWidget *tabWidget;
-    QLineEdit *searchBar;
-    // QtChartView *chartView;
-
-    void SetGUI();
-    void addButton(const QString &text);
-    void addTab();
-    void closeTab(int index);
-    // void filterList(const QString &query);
+    void openGroup();
+    void newGroup();
+    // void deleteGroup(Group *);
 };
