@@ -19,4 +19,9 @@ void BarrelPressureSensor::generate() {
         push(d);
     }
 }
-string BarrelPressureSensor::classSensor() const { return "\"class\": \"barrel-pressure\",\n"; }
+QJsonObject BarrelPressureSensor::classSensor() const { 
+    QString className = "barrel-pressure";
+    QJsonObject classObj;
+    classObj["class"] = className;
+    return classObj;  
+}

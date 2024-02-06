@@ -21,8 +21,11 @@ void SoilHumiditySensor::generate() {
         push(d);
     }
 }
-string SoilHumiditySensor::classSensor() const {
-    string jsonString = "\"class\": \"soil-humidity\",\n";
-    jsonString += "\"capacitative\": \"false\",\n";
-    return jsonString; 
+QJsonObject SoilHumiditySensor::classSensor() const {
+    QString className = "soil-humidity";
+    QString classInfo = "false";
+    QJsonObject classObj;
+    classObj["class"] = className;
+    classObj["capacitative"] = classInfo;
+    return classObj; 
 }

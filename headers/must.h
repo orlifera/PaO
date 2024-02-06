@@ -7,6 +7,6 @@ class MustTemperatureSensor : public TemperatureSensor {
     static double range; //deviazione standard
     public:
     MustTemperatureSensor(string, double, double, double =0);
-    void generate() override;
-    string classSensor() const override;
+    void generate();
+    QJsonObject classSensor() const;
 };

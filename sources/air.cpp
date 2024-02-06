@@ -31,8 +31,11 @@ void AirHumiditySensor::generate() {
         push(d);
     }
 }
-string AirHumiditySensor::classSensor() const {
-    string jsonString = "\"class\": \"air-humidity\",\n";
-    jsonString += "\"capacitative\": \"true\",\n";
-    return jsonString; 
+QJsonObject AirHumiditySensor::classSensor() const {
+    QString className = "air-humidity";
+    QString classInfo = "true";
+    QJsonObject classObj;
+    classObj["class"] = className;
+    classObj["capacitative"] = classInfo;
+    return classObj; 
 }

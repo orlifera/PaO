@@ -7,6 +7,6 @@ class VinesTemperatureSensor : public TemperatureSensor {
     static double amplitude;    //ampiezza per la distribuzione sinusoidale
     public:
     VinesTemperatureSensor(string, double, double =0);
-    void generate() override;
-    string classSensor() const override;
+    void generate();
+    QJsonObject classSensor() const;
 };

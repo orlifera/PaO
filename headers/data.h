@@ -9,6 +9,6 @@ class Data {
     Data(double =0, Time =0);
     double getValue() const;   //ritorna il valore del dato
     void setValue(double);     //assegna un nuovo valore (misurazione)
-    Time getTime() const;      //ritorna l'orario
+    string getTime() const;      //ritorna l'orario
     void setTime(unsigned int =0, unsigned int =0, unsigned int =0); //assegna l'orario
 };

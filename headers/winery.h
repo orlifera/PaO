@@ -6,6 +6,6 @@ class WineryTemperatureSensor : public TemperatureSensor {
     static double range; //deviazione standard
     public:
     WineryTemperatureSensor(string, double, double =0);
-    void generate() override;
-    string classSensor() const override;
+    void generate();
+    QJsonObject classSensor() const;
 };

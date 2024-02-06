@@ -23,8 +23,12 @@ void MustTemperatureSensor::generate() {
         push(d);
     }
 }
-string MustTemperatureSensor::classSensor() const {
-    string jsonString = "\"class\": \"must-temperature\",\n";
-    jsonString += "\"contact\": \"true\",\n";
-    return jsonString; 
+QJsonObject MustTemperatureSensor::classSensor() const {
+    QString className = "must-temperature";
+    QString classInfo = "true"; 
+    QJsonObject classObj;
+    classObj["class"] = className;
+    classObj["contact"] = classInfo;
+    classObj["timer"] = timer;
+    return classObj; 
 }

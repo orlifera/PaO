@@ -6,6 +6,6 @@ class BarrelPressureSensor : public PressureSensor {
     static double stdDeviation;    //deviazione standard
     public:
     BarrelPressureSensor(string, double, double =0);
-    void generate() override;
-    string classSensor() const override;
+    void generate();
+    QJsonObject classSensor() const;
 };
