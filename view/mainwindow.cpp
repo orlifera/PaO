@@ -32,7 +32,7 @@ void MainWindow::SetGUI()
 
     searchBar = new QLineEdit(sideMenu);
     searchBar->setPlaceholderText("Search...");
-    searchBar->setStyleSheet("QLineEdit { height: 100px; }");
+    // searchBar->setStyleSheet("QLineEdit { height: 100px; }");
 
     // Create a separator
     QFrame *line = new QFrame(sideMenu);
@@ -64,12 +64,10 @@ void MainWindow::SetGUI()
 
     // Create a menu bar
     QMenuBar *topMenu = new QMenuBar(this);
-    QMenu *file = topMenu->addMenu(tr("&New"));
+    QMenu *file = topMenu->addMenu(tr("&Menu"));
 
     // Add actions to the file menu
     file->addAction(tr("New Group"), this, SLOT(Group::newGroup()));
-
-    QMenu *open = topMenu->addMenu(tr("&Open"));
     file->addAction(tr("Open Group"), this, SLOT(Group::load()));
 
     // Set the menu bar
