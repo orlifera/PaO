@@ -12,6 +12,10 @@ Tab::Tab(Group *g, QTabWidget *t, QWidget *parent) : QWidget(parent), tabs(t), g
     this->setLayout(layout);
 }
 
+Group *Tab::getGroup() const { return group; }
+
+vector<Sensor *> Tab::getVector() const { return group->getSensors(); }
+
 void Tab::save()
 {
     QFileDialog dialog(this);

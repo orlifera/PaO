@@ -10,8 +10,14 @@ class BodyWidget : public QWidget
 private:
     Tab *tab;
     QWidget *left;
+    QListWidget *listWidget;
     QWidget *right;
 
 public:
     BodyWidget(Tab *, QWidget *parent = 0);
+    void createLeft();
+    void createRight();
+    void showRight(Sensor *);
+    void filterList(const QString &);
+    void populate(vector<Sensor *>);
 };

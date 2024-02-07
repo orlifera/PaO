@@ -19,6 +19,8 @@ private:
 
 public:
     Tab(Group *, QTabWidget *, QWidget *parent = 0);
+    vector<Sensor*> getVector() const;
+    Group* getGroup() const;
 public slots:
     void save();
     void rename();

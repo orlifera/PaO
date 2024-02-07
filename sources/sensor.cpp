@@ -109,46 +109,46 @@ Sensor *Sensor::load(string filename)
             inFile.close();
             if (className == "air-humidity")
             {
-                AirHumiditySensor a(name, expected, thr);
-                a.push(v);
-                return &a;
+                AirHumiditySensor *a = new AirHumiditySensor(name, expected, thr);
+                a->push(v);
+                return a;
             }
             if (className == "atm-pressure")
             {
-                AtmPressureSensor a(name, thr);
-                a.push(v);
-                return &a;
+                AtmPressureSensor *a = new AtmPressureSensor(name, thr);
+                a->push(v);
+                return a;
             }
             if (className == "barrel-pressure")
             {
-                BarrelPressureSensor a(name, expected, thr);
-                a.push(v);
-                return &a;
+                BarrelPressureSensor *a = new BarrelPressureSensor(name, expected, thr);
+                a->push(v);
+                return a;
             }
             if (className == "must-temperature")
             {
                 double timer = sensorObj["timer"].toDouble();
-                MustTemperatureSensor a(name, expected, timer, thr);
-                a.push(v);
-                return &a;
+                MustTemperatureSensor *a = new MustTemperatureSensor(name, expected, timer, thr);
+                a->push(v);
+                return a;
             }
             if (className == "soil-humidity")
             {
-                SoilHumiditySensor a(name, expected, thr);
-                a.push(v);
-                return &a;
+                SoilHumiditySensor *a = new SoilHumiditySensor(name, expected, thr);
+                a->push(v);
+                return a;
             }
             if (className == "vines-temperature")
             {
-                VinesTemperatureSensor a(name, expected, thr);
-                a.push(v);
-                return &a;
+                VinesTemperatureSensor *a = new VinesTemperatureSensor(name, expected, thr);
+                a->push(v);
+                return a;
             }
             if (className == "winery-temperature")
             {
-                WineryTemperatureSensor a(name, expected, thr);
-                a.push(v);
-                return &a;
+                WineryTemperatureSensor *a = new WineryTemperatureSensor(name, expected, thr);
+                a->push(v);
+                return a;
             }
         }
         else
@@ -160,6 +160,7 @@ Sensor *Sensor::load(string filename)
     {
         cerr << "Unable to open file" << endl;
     }
+    return 0;
 }
 Sensor *Sensor::newSensor()
 {
@@ -214,6 +215,7 @@ Sensor *Sensor::newSensor()
     {
         return new WineryTemperatureSensor(name, expected, thr);
     }
+    return 0;
 }
 // string Sensor::stringSensor() const {
 //     string jsonString = "";

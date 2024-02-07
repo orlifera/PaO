@@ -41,8 +41,8 @@ void MainWindow::openGroup()
 {
     bool ok;
     QString filename = QFileDialog::getOpenFileName(this, tr("Open Group"), "C://");
-    Group g = Group::load(filename.toStdString());
-    Tab *t = new Tab(&g, tabs);
+    Group *g = Group::load(filename.toStdString());
+    Tab *t = new Tab(g, tabs);
     tabs->addTab(t, filename);
 }
 

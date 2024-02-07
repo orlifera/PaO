@@ -33,11 +33,11 @@ public:
     // salva gruppo
     void save(string) const;
     // carica grupppo
-    static Group load(string);
+    static Group *load(string);
     // carica sensore nel gruppo
     void loadSensor();
     // crea nuovo gruppo
-    static Group newGroup();
+    // static Group newGroup();
     // crea nuovo sensore nel gruppo
     void newSensor();
     // Group& operator=(const Group&);

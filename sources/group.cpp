@@ -29,6 +29,7 @@ Sensor *Group::find(string n) const
         if ((*it)->getName() == n)
             return *it;
     }
+    return 0;
 }
 void Group::rename(string n) { groupName = n; }
 void Group::save(string path) const
@@ -59,7 +60,7 @@ void Group::save(string path) const
         cerr << "Error on saving the sensor" << endl;
     }
 }
-Group Group::load(string filename)
+Group *Group::load(string filename)
 {
     ifstream inFile(filename);
     if (inFile.is_open())
@@ -138,7 +139,7 @@ Group Group::load(string filename)
                     g.sensors.push_back(&a);
                 }
             }
-            return g;
+            return &g;
         }
         else
         {
@@ -149,6 +150,7 @@ Group Group::load(string filename)
     {
         cerr << "Unable to open file" << endl;
     }
+    return 0;
 }
 void Group::loadSensor()
 {
