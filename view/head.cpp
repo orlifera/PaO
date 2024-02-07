@@ -8,9 +8,14 @@ HeadWidget::HeadWidget(QString t, Tab *tb, QWidget *parent) : QWidget(parent), t
     saveBtn = new QPushButton("Save", this);
     renameBtn = new QPushButton("Rename", this);
     deleteBtn = new QPushButton("Delete", this);
+    title->setStyleSheet("font-size: 16pt; text-transform: uppercase;");
+    saveBtn->setFixedWidth(100);
+    renameBtn->setFixedWidth(100);
+    deleteBtn->setFixedWidth(100);
 
     QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->addWidget(title);
+    layout->addSpacing(10);
+    layout->addWidget(title, 2);
     layout->addWidget(saveBtn);
     layout->addWidget(renameBtn);
     layout->addWidget(deleteBtn);

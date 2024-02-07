@@ -76,7 +76,7 @@ Group *Group::load(string filename)
         {
             QJsonObject groupObj = jsonDoc.object();
             string groupName = groupObj["groupName"].toString().toStdString();
-            Group g(groupName);
+            Group *g = new Group(groupName);
             QJsonArray sensorArray = groupObj["sensors"].toArray();
             for (auto s : sensorArray)
             {
@@ -99,47 +99,47 @@ Group *Group::load(string filename)
                 {
                     AirHumiditySensor a(sensorName, expected, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
                 if (className == "atm-pressure")
                 {
                     AtmPressureSensor a(sensorName, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
                 if (className == "barrel-pressure")
                 {
                     BarrelPressureSensor a(sensorName, expected, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
                 if (className == "must-temperature")
                 {
                     double timer = sensorObj["timer"].toDouble();
                     MustTemperatureSensor a(sensorName, expected, timer, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
                 if (className == "soil-humidity")
                 {
                     SoilHumiditySensor a(sensorName, expected, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
                 if (className == "vines-temperature")
                 {
                     VinesTemperatureSensor a(sensorName, expected, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
                 if (className == "winery-temperature")
                 {
                     WineryTemperatureSensor a(sensorName, expected, thr);
                     a.push(sensorV);
-                    g.sensors.push_back(&a);
+                    g->sensors.push_back(&a);
                 }
             }
-            return &g;
+            return g;
         }
         else
         {

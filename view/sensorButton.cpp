@@ -1,5 +1,5 @@
 #include "../headers/sensorButton.h"
-SensorBtn::SensorBtn(Sensor *s, QWidget *parent = nullptr) : QPushButton(parent), sensor(s)
+SensorBtn::SensorBtn(Sensor *s, QListWidget *l, QWidget *parent = nullptr) : QPushButton(parent), list(l), sensor(s)
 {
     // Create labels
     // sensorIcon = new QLabel(this);

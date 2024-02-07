@@ -17,5 +17,6 @@ public:
 private slots:
     void openGroup();
     void newGroup();
+    void closeApp();
     // void deleteGroup(Group *);
 };

@@ -16,13 +16,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     QMenuBar *menuBar = new QMenuBar(this);
     QMenu *menu = menuBar->addMenu("Menu");
-    QAction *actionNewGroup = menu->addAction("New Group");
-    QAction *actionOpenGroup = menu->addAction("Open Group");
+    QAction *actionNewGroup = menu->addAction(tr("New Group"));
+    QAction *actionOpenGroup = menu->addAction(tr("Open Group"));
+    QAction *actionQuit = menu->addAction(tr("Quit"));
 
     connect(actionOpenGroup, &QAction::triggered, this, &MainWindow::openGroup);
     connect(actionNewGroup, &QAction::triggered, this, &MainWindow::newGroup);
+    connect(actionQuit, &QAction::triggered, this, &MainWindow::closeApp);
 
     setMenuBar(menuBar);
+    Group *g = Group::load("C:\\Users\\david\\OneDrive\\Desktop\\group1.json");
+    Tab *t = new Tab(g, tabs);
+    tabs->addTab(t, QString::fromStdString(g->getGroupName()));
+}
+
+void MainWindow::closeApp()
+{
+    qApp->quit();
 }
 
 void MainWindow::newGroup()
@@ -40,10 +50,10 @@ void MainWindow::newGroup()
 void MainWindow::openGroup()
 {
     bool ok;
-    QString filename = QFileDialog::getOpenFileName(this, tr("Open Group"), "C://");
-    Group *g = Group::load(filename.toStdString());
+    QString path = QFileDialog::getOpenFileName(this, tr("Open Group"), "C://");
+    Group *g = Group::load(path.toStdString());
     Tab *t = new Tab(g, tabs);
-    tabs->addTab(t, filename);
+    tabs->addTab(t, QString::fromStdString(g->getGroupName()));
 }
 
 // connect(searchBar, &QLineEdit::textChanged, this, &MainWindow::filterList);

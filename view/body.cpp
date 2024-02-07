@@ -1,16 +1,17 @@
 #include "../headers/body.h"
 #include "../headers/tab.h"
-#include "../headers/sensorButton.h"
 
 BodyWidget::BodyWidget(Tab *t, QWidget *parent) : QWidget(parent), tab(t)
 {
     left = new QWidget(this);
     right = new QWidget(this);
     createLeft();
+    createRight();
 
+    left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->addWidget(left);
-    layout->addWidget(right);
+    layout->addWidget(left, 1);
+    layout->addWidget(right, 4);
 
     this->setLayout(layout);
 }
@@ -20,6 +21,7 @@ void BodyWidget::createLeft()
     QVBoxLayout *layout = new QVBoxLayout(this);
     QLineEdit *searchBar = new QLineEdit(left);
     searchBar->setPlaceholderText("Search...");
+    searchBar->setFixedHeight(40);
     listWidget = new QListWidget(left);
     vector<Sensor *> sensors = tab->getVector();
     populate(sensors);
@@ -37,8 +39,9 @@ void BodyWidget::createRight()
     QVBoxLayout *container_layout = new QVBoxLayout(container);
     QLabel *subtitle = new QLabel(container);
     QPushButton *generateBtn = new QPushButton("generate", container);
+    generateBtn->setFixedWidth(100);
     container_layout->addWidget(subtitle);
-    container_layout->addWidget(generateBtn);
+    container_layout->addWidget(generateBtn, 0, Qt::AlignCenter);
     container->setLayout(container_layout);
     external_layout->addWidget(container);
     right->setLayout(external_layout);
@@ -55,12 +58,13 @@ void BodyWidget::populate(vector<Sensor *> sensors)
 {
     for (auto it = sensors.begin(); it != sensors.end(); ++it)
     {
-        SensorBtn *btn = new SensorBtn(*it, listWidget);
+        QPushButton *btn = new QPushButton(QString::fromStdString((*it)->getName()), listWidget);
+        btn->setFixedHeight(40);
         QListWidgetItem *item = new QListWidgetItem();
         listWidget->addItem(item);
         listWidget->setItemWidget(item, btn);
-        connect(btn, &QPushButton::clicked, right, [this, it]()
-                { showRight(*it); });
+        // connect(btn, &QPushButton::clicked, right, [this, it]()
+        //         { showRight(*it); });
     }
 }
 void BodyWidget::filterList(const QString &query)
@@ -69,7 +73,7 @@ void BodyWidget::filterList(const QString &query)
     {
         QListWidgetItem *item = listWidget->item(i);
         QWidget *widget = listWidget->itemWidget(item);
-        SensorBtn *sensorBtn = qobject_cast<SensorBtn *>(widget);
+        QPushButton *sensorBtn = qobject_cast<QPushButton *>(widget);
 
         if (sensorBtn)
         {
