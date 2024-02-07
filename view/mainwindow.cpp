@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(actionQuit, &QAction::triggered, this, &MainWindow::closeApp);
 
     setMenuBar(menuBar);
-    Group *g = Group::load("C:\\Users\\david\\OneDrive\\Desktop\\group1.json");
+    // test
+    Group *g = Group::load("../group1.json");
     Tab *t = new Tab(g, tabs);
     tabs->addTab(t, QString::fromStdString(g->getGroupName()));
 }
