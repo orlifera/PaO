@@ -1,9 +1,10 @@
 #include "../headers/head.h"
+#include "../headers/tab.h"
 
 HeadWidget::HeadWidget(QString t, Tab *tb, QWidget *parent) : QWidget(parent), tab(tb)
 {
     title = new QLabel(this);
-    title->setText("Sensors");
+    title->setText(t);
     saveBtn = new QPushButton("Save", this);
     renameBtn = new QPushButton("Rename", this);
     deleteBtn = new QPushButton("Delete", this);
@@ -20,3 +21,5 @@ HeadWidget::HeadWidget(QString t, Tab *tb, QWidget *parent) : QWidget(parent), t
     connect(renameBtn, &QPushButton::pressed, tab, &Tab::rename);
     connect(deleteBtn, &QPushButton::pressed, tab, &Tab::deleteGroup);
 }
+
+void HeadWidget::refresh(QString t) { title->setText(t); }

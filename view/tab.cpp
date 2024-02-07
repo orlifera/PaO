@@ -1,8 +1,10 @@
 #include "../headers/tab.h"
+#include "../headers/head.h"
+#include "../headers/body.h"
 
-Tab::Tab(Group g, QTabWidget *t, QWidget *parent) : QWidget(parent), group(g), tabs(t)
+Tab::Tab(Group *g, QTabWidget *t, QWidget *parent) : QWidget(parent), tabs(t), group(g)
 {
-    head = new HeadWidget(QString::fromStdString(group.getGroupName()), this);
+    head = new HeadWidget(QString::fromStdString(group->getGroupName()), this);
     body = new BodyWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(head);
@@ -24,7 +26,7 @@ void Tab::save()
     {
         QString filePath = dialog.selectedFiles().first();
 
-        group.save(filePath.toStdString());
+        group->save(filePath.toStdString());
     }
 }
 
@@ -34,7 +36,10 @@ void Tab::rename()
     QString text = QInputDialog::getText(this, tr("Rename Group"), tr("Group name:"), QLineEdit::Normal, QDir::home().dirName(), &ok);
     if (ok && !text.isEmpty())
     {
-        group.Group::rename(text.toStdString());
+        group->Group::rename(text.toStdString());
+        head->refresh(text);
+        int tabIndex = tabs->indexOf(this);
+        tabs->setTabText(tabIndex, text);
     }
 }
 
@@ -44,7 +49,10 @@ void Tab::deleteGroup()
 
     if (reply == QMessageBox::Yes)
     {
-        delete &group;
+        string filename = group->getGroupName();
+        if (exists(filename))
+            remove(filename);
+        delete group;
         int tabIndex = tabs->indexOf(this);
         if (tabIndex != -1)
         {

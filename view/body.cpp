@@ -1,4 +1,5 @@
 #include "../headers/body.h"
+#include "../headers/tab.h"
 
 BodyWidget::BodyWidget(Tab *t, QWidget *parent) : QWidget(parent), tab(t)
 {

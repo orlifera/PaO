@@ -1,4 +1,5 @@
 #include "../headers/sensor.h"
+#include "../headers/group.h"
 
 Sensor::Sensor(string n, /*string c*/ double ex, double th) : name(n), expectedValue(ex), threshold(th) {}
 string Sensor::getName() const { return name; }
@@ -24,7 +25,8 @@ int Sensor::isInThreshold() const
         return -1;
     return 0;
 }
-QJsonObject Sensor::writeSensor() const {
+QJsonObject Sensor::writeSensor() const
+{
     QJsonObject sensor;
     // gets sensor's name
     sensor["sensorName"] = QString::fromStdString(getName());
@@ -34,7 +36,8 @@ QJsonObject Sensor::writeSensor() const {
     sensor["threshold"] = getThreshold();
     // gets sensor's class
     QJsonObject classObj = classSensor();
-    for (auto it = classObj.begin(); it != classObj.end(); ++it) {
+    for (auto it = classObj.begin(); it != classObj.end(); ++it)
+    {
         sensor.insert(it.key(), it.value());
     }
     // creates an infoArray
@@ -55,8 +58,10 @@ QJsonObject Sensor::writeSensor() const {
     return sensor;
 }
 
-void Sensor::save(string filename) const {
-    if (exists(filename)) remove(filename);
+void Sensor::save(string filename) const
+{
+    if (exists(filename))
+        remove(filename);
     // new file "filename"
     ofstream outFile(filename);
     if (outFile.is_open())
@@ -64,24 +69,29 @@ void Sensor::save(string filename) const {
         QJsonObject sensor = writeSensor();
         // pushes the group in the jsonDocument
         QJsonDocument jsonDoc(sensor);
-        //insert data in file
+        // insert data in file
         outFile << jsonDoc.toJson().toStdString();
         outFile.close();
     }
-    else {
+    else
+    {
         cerr << "Error on saving the sensor" << endl;
     }
 }
-Sensor* Sensor::load(string filename) {
+Sensor *Sensor::load(string filename)
+{
     ifstream inFile(filename);
-    if (inFile.is_open()) {
+    if (inFile.is_open())
+    {
         string content;
         char ch;
-        while (inFile.get(ch)) {
+        while (inFile.get(ch))
+        {
             content.push_back(ch);
         }
-        QJsonDocument jsonDoc =QJsonDocument::fromJson(QByteArray::fromStdString(content));
-        if (!jsonDoc.isNull() && jsonDoc.isObject()) {
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(QByteArray::fromStdString(content));
+        if (!jsonDoc.isNull() && jsonDoc.isObject())
+        {
             QJsonObject sensorObj = jsonDoc.object();
             string name = sensorObj["sensorName"].toString().toStdString();
             double expected = sensorObj["expected value"].toDouble();
@@ -89,59 +99,70 @@ Sensor* Sensor::load(string filename) {
             string className = sensorObj["class"].toString().toStdString();
             vector<Data> v;
             QJsonArray dataArray = sensorObj["info"].toArray();
-            for (auto entry: dataArray) {
+            for (auto entry : dataArray)
+            {
                 QJsonObject dataObj = entry.toObject();
                 Time t(dataObj["time"].toInt());
                 double val = dataObj["value"].toDouble();
-                v.push_back(Data(val,t));
+                v.push_back(Data(val, t));
             }
             inFile.close();
-            if (className == "air-humidity") {
-                AirHumiditySensor a(name,expected,thr);
+            if (className == "air-humidity")
+            {
+                AirHumiditySensor a(name, expected, thr);
                 a.push(v);
                 return &a;
             }
-            if (className == "atm-pressure") {
-                AtmPressureSensor a(name,thr);
+            if (className == "atm-pressure")
+            {
+                AtmPressureSensor a(name, thr);
                 a.push(v);
                 return &a;
             }
-            if (className == "barrel-pressure") {
-                BarrelPressureSensor a(name,expected,thr);
+            if (className == "barrel-pressure")
+            {
+                BarrelPressureSensor a(name, expected, thr);
                 a.push(v);
                 return &a;
             }
-            if (className == "must-temperature") {
+            if (className == "must-temperature")
+            {
                 double timer = sensorObj["timer"].toDouble();
-                MustTemperatureSensor a(name,expected,timer,thr);
+                MustTemperatureSensor a(name, expected, timer, thr);
                 a.push(v);
                 return &a;
             }
-            if (className == "soil-humidity") {
-                SoilHumiditySensor a(name,expected,thr);
+            if (className == "soil-humidity")
+            {
+                SoilHumiditySensor a(name, expected, thr);
                 a.push(v);
                 return &a;
             }
-            if (className == "vines-temperature") {
-                VinesTemperatureSensor a(name,expected,thr);
+            if (className == "vines-temperature")
+            {
+                VinesTemperatureSensor a(name, expected, thr);
                 a.push(v);
                 return &a;
             }
-            if (className == "winery-temperature") {
-                WineryTemperatureSensor a(name,expected,thr);
+            if (className == "winery-temperature")
+            {
+                WineryTemperatureSensor a(name, expected, thr);
                 a.push(v);
                 return &a;
             }
         }
-        else {
+        else
+        {
             cerr << "Error: unable to parse JSON file" << endl;
         }
     }
-    else {
+    else
+    {
         cerr << "Unable to open file" << endl;
     }
 }
-Sensor* Sensor::newSensor() {
+Sensor *Sensor::newSensor()
+{
     cout << "Name of the new sensor: ";
     string name;
     cin >> name;
@@ -150,39 +171,48 @@ Sensor* Sensor::newSensor() {
     string sensorclass;
     cin >> sensorclass;
     double expected;
-    if (sensorclass == "atm-pressure") {
+    if (sensorclass == "atm-pressure")
+    {
         expected = 1.0;
     }
-    else {
+    else
+    {
         cout << "\nExpected value: ";
         cin >> expected;
     }
     cout << "\nThreshold: ";
     double thr;
     cin >> thr;
-    if (sensorclass == "air-humidity") {
-        return new AirHumiditySensor(name,expected,thr);
+    if (sensorclass == "air-humidity")
+    {
+        return new AirHumiditySensor(name, expected, thr);
     }
-    if (sensorclass == "atm-pressure") {
-        return new AtmPressureSensor(name,thr);
+    if (sensorclass == "atm-pressure")
+    {
+        return new AtmPressureSensor(name, thr);
     }
-    if (sensorclass == "barrel-pressure") {
-        return new BarrelPressureSensor(name,expected,thr);
+    if (sensorclass == "barrel-pressure")
+    {
+        return new BarrelPressureSensor(name, expected, thr);
     }
-    if (sensorclass == "must-temperature") {
+    if (sensorclass == "must-temperature")
+    {
         double timer;
         cout << "\nTimer: ";
         cin >> timer;
-        return new MustTemperatureSensor(name,expected,timer,thr);
+        return new MustTemperatureSensor(name, expected, timer, thr);
     }
-    if (sensorclass == "soil-humidity") {
-        return new SoilHumiditySensor(name,expected,thr);
+    if (sensorclass == "soil-humidity")
+    {
+        return new SoilHumiditySensor(name, expected, thr);
     }
-    if (sensorclass == "vines-temperature") {
-        return new VinesTemperatureSensor(name,expected,thr);
+    if (sensorclass == "vines-temperature")
+    {
+        return new VinesTemperatureSensor(name, expected, thr);
     }
-    if (sensorclass == "winery-temperature") {
-        return new WineryTemperatureSensor(name,expected,thr);
+    if (sensorclass == "winery-temperature")
+    {
+        return new WineryTemperatureSensor(name, expected, thr);
     }
 }
 // string Sensor::stringSensor() const {

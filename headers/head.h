@@ -16,4 +16,5 @@ private:
 
 public:
     HeadWidget(QString, Tab *, QWidget *parent = 0);
+    void refresh(QString);
 };
