@@ -26,5 +26,4 @@ public slots:
     void save();
     void rename();
     void deleteGroup();
-    void generate(Sensor *);
 };

@@ -12,7 +12,7 @@ private:
     QWidget *left;
     QListWidget *listWidget;
     QWidget *right;
-    QVBoxLayout * rightlayout;
+    QVBoxLayout *rightlayout;
 
 public:
     BodyWidget(Tab *, QWidget *parent = 0);
@@ -20,7 +20,13 @@ public:
     void createRight(Sensor *);
     void filterList(const QString &);
     void connection(Sensor *);
+    void refresh();
 private slots:
     void newSensor();
+    void loadSensor();
     void viewRight(Sensor *);
+    void generate(Sensor *);
+    void saveSensor(Sensor *);
+    void deleteSensor(Sensor *);
+    void modifySensor(Sensor *);
 };

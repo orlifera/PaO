@@ -27,7 +27,7 @@ public:
     // rimuove un senore data la posizione
     void removeSensor(int);
     // trova un sensore dal nome
-    Sensor *find(string) const;
+    bool find(string) const;
     // rinomina gruppo
     void rename(string);
     // salva gruppo
@@ -35,7 +35,7 @@ public:
     // carica grupppo
     static Group *load(string);
     // carica sensore nel gruppo
-    Sensor *loadSensor();
+    Sensor *loadSensor(string);
     // crea nuovo gruppo
     // static Group newGroup();
     // crea nuovo sensore nel gruppo

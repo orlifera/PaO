@@ -65,8 +65,3 @@ void Tab::deleteGroup()
         delete this;
     }
 }
-
-void Tab::generate(Sensor *sensor)
-{
-    sensor->generate();
-}

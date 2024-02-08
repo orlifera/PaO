@@ -1,0 +1,8 @@
+{
+    "class": "atm-pressure",
+    "expected value": 1,
+    "info": [
+    ],
+    "sensorName": "attm",
+    "threshold": 0.11
+}

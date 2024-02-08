@@ -2,39 +2,45 @@
     "groupName": "fss",
     "sensors": [
         {
-            "sensorName": "AirSen1",
-            "expected value": 50.0,
-            "threshold": 2.0,
-            "class": "air-humidity",
-            "capacitative": true,
-            "info": [
-                {"time": 1609459200, "value": 68.5},
-                {"time": 1609459300, "value": 69.0},
-                {"time": 1609459400, "value": 70.2}
-            ]
-        },
-        {
-            "sensorName": "WinSen2",
-            "expected value": 45,
-            "threshold": 0.5,
             "class": "winery-temperature",
-            "contact": false,
+            "contact": "false",
+            "expected value": 45,
             "info": [
-                {"time": 1609459200, "value": 68.5},
-                {"time": 1609459300, "value": 69.0},
-                {"time": 1609459400, "value": 70.2}
-            ]
+                {
+                    "time": "0",
+                    "value": 68.5
+                },
+                {
+                    "time": "0",
+                    "value": 69
+                },
+                {
+                    "time": "0",
+                    "value": 70.2
+                }
+            ],
+            "sensorName": "WinSen2",
+            "threshold": 0.5
         },
         {
-            "sensorName": "BarSen3",
-            "expected value": 10.2,
-            "threshold": 0.01,
             "class": "barrel-pressure",
+            "expected value": 10.2,
             "info": [
-                {"time": 1609459200, "value": 68.5},
-                {"time": 1609459300, "value": 69.0},
-                {"time": 1609459400, "value": 70.2}
-            ]
+                {
+                    "time": "0",
+                    "value": 68.5
+                },
+                {
+                    "time": "0",
+                    "value": 69
+                },
+                {
+                    "time": "0",
+                    "value": 70.2
+                }
+            ],
+            "sensorName": "BarSen3",
+            "threshold": 0.01
         }
     ]
 }

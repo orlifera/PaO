@@ -22,12 +22,12 @@ void Group::removeSensor(int pos)
     string n = sensors[pos]->getName();
     removeSensor(n);
 }
-Sensor *Group::find(string n) const
+bool Group::find(string n) const
 {
     for (auto it = sensors.begin(); it != sensors.end(); it++)
     {
         if ((*it)->getName() == n)
-            return *it;
+            return true;
     }
     return 0;
 }
@@ -155,11 +155,8 @@ Group *Group::load(string filename)
     }
     return 0;
 }
-Sensor *Group::loadSensor()
+Sensor *Group::loadSensor(string filename)
 {
-    cout << "Name of the file: ";
-    string filename;
-    cin >> filename;
     Sensor *s = Sensor::load(filename);
     addSensor(s);
     return s;
