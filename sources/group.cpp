@@ -36,6 +36,8 @@ void Group::save(string path) const
 {
     if (exists(path))
         remove(path);
+    if (path.find(".json") == string::npos)
+        path += ".json";
     // new file "filename"
     ofstream outFile(path);
     if (outFile.is_open())
@@ -87,7 +89,7 @@ Group *Group::load(string filename)
                 string className = sensorObj["class"].toString().toStdString();
                 vector<Data> sensorV;
                 QJsonArray dataArray = sensorObj["info"].toArray();
-                for (auto entry : dataArray)
+                for (const auto &entry : dataArray)
                 {
                     QJsonObject dataObj = entry.toObject();
                     Time t(dataObj["time"].toInt());
@@ -97,46 +99,47 @@ Group *Group::load(string filename)
                 inFile.close();
                 if (className == "air-humidity")
                 {
-                    AirHumiditySensor a(sensorName, expected, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    AirHumiditySensor *a = new AirHumiditySensor(sensorName, expected, thr);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
                 if (className == "atm-pressure")
                 {
-                    AtmPressureSensor a(sensorName, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    AtmPressureSensor *a = new AtmPressureSensor(sensorName, thr);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
                 if (className == "barrel-pressure")
                 {
-                    BarrelPressureSensor a(sensorName, expected, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    BarrelPressureSensor *a = new BarrelPressureSensor(sensorName, expected, thr);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
                 if (className == "must-temperature")
                 {
                     double timer = sensorObj["timer"].toDouble();
-                    MustTemperatureSensor a(sensorName, expected, timer, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    MustTemperatureSensor *a = new MustTemperatureSensor(sensorName, expected, thr);
+                    a->setTimer(timer);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
                 if (className == "soil-humidity")
                 {
-                    SoilHumiditySensor a(sensorName, expected, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    SoilHumiditySensor *a = new SoilHumiditySensor(sensorName, expected, thr);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
                 if (className == "vines-temperature")
                 {
-                    VinesTemperatureSensor a(sensorName, expected, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    VinesTemperatureSensor *a = new VinesTemperatureSensor(sensorName, expected, thr);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
                 if (className == "winery-temperature")
                 {
-                    WineryTemperatureSensor a(sensorName, expected, thr);
-                    a.push(sensorV);
-                    g->sensors.push_back(&a);
+                    WineryTemperatureSensor *a = new WineryTemperatureSensor(sensorName, expected, thr);
+                    a->push(sensorV);
+                    g->sensors.push_back(a);
                 }
             }
             return g;
@@ -152,99 +155,18 @@ Group *Group::load(string filename)
     }
     return 0;
 }
-void Group::loadSensor()
+Sensor *Group::loadSensor()
 {
     cout << "Name of the file: ";
     string filename;
     cin >> filename;
-    addSensor(Sensor::load(filename));
+    Sensor *s = Sensor::load(filename);
+    addSensor(s);
+    return s;
 }
-// Group Group::newGroup() {
-//     cout << "Name of the new group: ";
-//     string name;
-//     cin >> name;
-//     return Group(name);
-// }
-void Group::newSensor()
+Sensor *Group::newSensor(string n, double e, double t, string c)
 {
-    addSensor(Sensor::newSensor());
+    Sensor *s = Sensor::newSensor(n, e, t, c);
+    addSensor(s);
+    return s;
 }
-// void Group::saveGroup(const string &filename) const {
-//     string file = filename + ".json";
-//     if (exists(file)) remove(file);
-//     ofstream outputFile(file);
-//     if (outputFile.is_open()) {
-//         string jsonString = "{\n";
-//         jsonString += "\"groupName\": \"" + getGroupName() + "\",\n";
-//         jsonString += "\"sensors\": [\n";
-//         for (auto git = sensors.begin(); git != sensors.end(); ++git)
-//         {
-//             jsonString += "{\n" + (*git)->stringSensor() + "}";
-//             if (git != sensors.end()-1) jsonString += ",\n";
-//             jsonString += "\n";
-//         }
-//         jsonString += "]\n}";
-//         outputFile << jsonString;
-//         outputFile.close();
-//     } else {
-//         cerr << "Failed to save the file." << endl;
-//     }
-// }
-
-// bool Group::loadGroup() {
-//     ifstream inputFile("./data.json");
-//     if (inputFile.is_open()) {
-//         stringstream filecontent;
-//         filecontent << inputFile.rdbuf();
-//         string jsonString = filecontent.str();
-//         size_t groupPos = jsonString.find("\"groupName\":");
-//         if (groupPos != string::npos)
-//         {
-//             size_t groupStartPos = jsonString.find("\"", groupPos+1)+1;
-//             size_t groupEndPos = jsonString.find("\"", groupStartPos);
-//             groupName = jsonString.substr(groupStartPos, groupEndPos-groupStartPos);
-//             while (true) {
-//                 size_t sensorPos = jsonString.find("\"sensorName\":");
-//                 size_t expectedPos = jsonString.find("\"expextedValue\":");
-//                 size_t thresholdPos = jsonString.find("\"threshold\":");
-//                 size_t classPos = jsonString.find("\"class\":");
-//                 if (sensorPos != string::npos && expectedPos != string::npos && thresholdPos != string::npos && classPos != string::npos) {
-//                     size_t sensorStartPos = jsonString.find("\"", sensorPos+1)+1;
-//                     size_t sensorEndPos = jsonString.find("\"", sensorStartPos);
-//                     string sensorName = jsonString.substr(sensorStartPos, sensorEndPos-sensorStartPos);
-//                     size_t expectedStartPos = jsonString.find("\"", expectedPos+1)+1;
-//                     size_t expectedEndPos = jsonString.find("\"", expectedStartPos);
-//                     double expV = stod(jsonString.substr(expectedStartPos, expectedEndPos-expectedStartPos));
-//                     size_t thresholdStartPos = jsonString.find("\"", thresholdPos+1)+1;
-//                     size_t thresholdEndPos = jsonString.find("\"", thresholdStartPos);
-//                     double thr = stod(jsonString.substr(thresholdStartPos, thresholdEndPos-thresholdStartPos));
-//                     size_t classStartPos = jsonString.find("\"", classPos+1)+1;
-//                     size_t classEndPos = jsonString.find("\"", classStartPos);
-//                     string className = jsonString.substr(classStartPos, classEndPos-classStartPos);
-//                     if (className == "air-humidity") sensors.push_back(&AirHumiditySensor(sensorName,expV,thr));
-//                     else if (className == "atm-pressure") sensors.push_back(&AtmPressureSensor(sensorName,thr));
-//                     else if (className == "barrel-pressure") sensors.push_back(&BarrelPressureSensor(sensorName,expV,thr));
-//                     else if (className == "must-temperature") sensors.push_back(&MustTemperatureSensor(sensorName,expV,thr));
-//                     else if (className == "soil-humidity") sensors.push_back(&SoilHumiditySensor(sensorName,expV,thr));
-//                     else if (className == "vines-temperature") sensors.push_back(&VinesTemperatureSensor(sensorName,expV,thr));
-//                     else if (className == "winery-temperature") sensors.push_back(&WineryTemperatureSensor(sensorName,expV,thr));
-//                     size_t valuePos = jsonString.find("\"value\":");
-//                     size_t valueStartPos = jsonString.find("\"", valuePos+1)+1;
-//                     size_t valueEndPos = jsonString.find("\"", valueStartPos);
-//                     double value = stod(jsonString.substr(valueStartPos, valueEndPos-valueStartPos));
-//                     size_t timePos = jsonString.find("\"time\":");
-//                     size_t timeStartPos = jsonString.find("\"", timePos+1)+1;
-//                     size_t timeHourPos = jsonString.find(":", timeStartPos+1);
-//                     size_t timeMinPos = jsonString.find(":", timeHourPos+1);
-//                     size_t timeEndPos = jsonString.find("\"", timeStartPos);
-//                     unsigned int h = stoi(jsonString.substr(timeStartPos, timeHourPos-timeStartPos));
-//                     unsigned int m = stoi(jsonString.substr(timeHourPos, timeMinPos-timeHourPos));
-//                     unsigned int s = stoi(jsonString.substr(timeMinPos, timeEndPos-timeMinPos));
-//                     sensors->infoArray.setValue(value);
-//                     sensors->infoArray.setTime(h,m,s);
-//                 }
-//             }
-//         }
-//         return true;
-//     } else return false;
-// }

@@ -9,14 +9,17 @@ class MainWindow : public QMainWindow
 
 private:
     QTabWidget *tabs;
+    QLabel *welcome;
 
 public:
     MainWindow(QWidget *parent = 0);
+    void firstView();
     // public slots:
     //     void filterList(const QString &query);
 private slots:
     void openGroup();
     void newGroup();
     void closeApp();
+    void closeTab(int);
     // void deleteGroup(Group *);
 };

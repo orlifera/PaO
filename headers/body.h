@@ -12,12 +12,15 @@ private:
     QWidget *left;
     QListWidget *listWidget;
     QWidget *right;
+    QVBoxLayout * rightlayout;
 
 public:
     BodyWidget(Tab *, QWidget *parent = 0);
     void createLeft();
-    void createRight();
-    void showRight(Sensor *);
+    void createRight(Sensor *);
     void filterList(const QString &);
-    void populate(vector<Sensor *>);
+    void connection(Sensor *);
+private slots:
+    void newSensor();
+    void viewRight(Sensor *);
 };

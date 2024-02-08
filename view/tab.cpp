@@ -2,7 +2,7 @@
 #include "../headers/head.h"
 #include "../headers/body.h"
 
-Tab::Tab(Group *g, QTabWidget *t, QWidget *parent) : QWidget(parent), tabs(t), group(g)
+Tab::Tab(Group *g, QTabWidget *t, string p, QWidget *parent) : QWidget(parent), tabs(t), path(p), group(g)
 {
     head = new HeadWidget(QString::fromStdString(group->getGroupName()), this);
     body = new BodyWidget(this);
@@ -31,6 +31,7 @@ void Tab::save()
         QString filePath = dialog.selectedFiles().first();
 
         group->save(filePath.toStdString());
+        path = filePath.toStdString();
     }
 }
 
@@ -49,15 +50,14 @@ void Tab::rename()
 
 void Tab::deleteGroup()
 {
-    QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirmation", "Are you sure you want to delete this group?", QMessageBox::Yes | QMessageBox::No);
+    QMessageBox::StandardButton reply = QMessageBox::question(this, "Confirmation", "The file relative to this group in the folder is going to be deleted.\nAre you sure you want to delete this group?", QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes)
     {
-        string filename = group->getGroupName();
-        if (exists(filename))
-            remove(filename);
-        delete group;
         int tabIndex = tabs->indexOf(this);
+        if (exists(path))
+            remove(path);
+        delete group;
         if (tabIndex != -1)
         {
             tabs->removeTab(tabIndex);

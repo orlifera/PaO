@@ -9,10 +9,18 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(mainWidget);
 
     tabs = new QTabWidget(mainWidget);
-
+    tabs->setTabsClosable(true);
+    connect(tabs->tabBar(), SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
     QVBoxLayout *mainLayout = new QVBoxLayout(mainWidget);
     mainLayout->addWidget(tabs);
+
+    welcome = new QLabel(mainWidget);
+    welcome->setText("There are no open groups");
+    welcome->setStyleSheet("font-size: 16pt; text-transform: uppercase");
+    mainLayout->addWidget(welcome, 0, Qt::AlignCenter);
     mainWidget->setLayout(mainLayout);
+
+    firstView();
 
     QMenuBar *menuBar = new QMenuBar(this);
     QMenu *menu = menuBar->addMenu("Menu");
@@ -25,10 +33,28 @@ MainWindow::MainWindow(QWidget *parent)
     connect(actionQuit, &QAction::triggered, this, &MainWindow::closeApp);
 
     setMenuBar(menuBar);
-    // test
-    Group *g = Group::load("../group1.json");
-    Tab *t = new Tab(g, tabs);
-    tabs->addTab(t, QString::fromStdString(g->getGroupName()));
+}
+
+void MainWindow::closeTab(int index)
+{
+    QWidget *widget = tabs->widget(index);
+    tabs->removeTab(index);
+    firstView();
+    delete widget;
+}
+
+void MainWindow::firstView()
+{
+    if (tabs->currentIndex() == -1)
+    {
+        tabs->setVisible(false);
+        welcome->setVisible(true);
+    }
+    else
+    {
+        tabs->setVisible(true);
+        welcome->setVisible(false);
+    }
 }
 
 void MainWindow::closeApp()
@@ -45,16 +71,22 @@ void MainWindow::newGroup()
         Group *g = new Group(text.toStdString());
         Tab *t = new Tab(g, tabs);
         tabs->addTab(t, text);
+        tabs->setCurrentWidget(t);
+        firstView();
     }
 }
 
 void MainWindow::openGroup()
 {
-    bool ok;
     QString path = QFileDialog::getOpenFileName(this, tr("Open Group"), "C://");
-    Group *g = Group::load(path.toStdString());
-    Tab *t = new Tab(g, tabs);
-    tabs->addTab(t, QString::fromStdString(g->getGroupName()));
+    if (!path.isEmpty())
+    {
+        Group *g = Group::load(path.toStdString());
+        Tab *t = new Tab(g, tabs, path.toStdString());
+        tabs->addTab(t, QString::fromStdString(g->getGroupName()));
+        tabs->setCurrentWidget(t);
+        firstView();
+    }
 }
 
 // connect(searchBar, &QLineEdit::textChanged, this, &MainWindow::filterList);

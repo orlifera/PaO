@@ -62,6 +62,8 @@ void Sensor::save(string filename) const
 {
     if (exists(filename))
         remove(filename);
+    if (filename.find(".json") == string::npos)
+        filename += ".json";
     // new file "filename"
     ofstream outFile(filename);
     if (outFile.is_open())
@@ -128,7 +130,8 @@ Sensor *Sensor::load(string filename)
             if (className == "must-temperature")
             {
                 double timer = sensorObj["timer"].toDouble();
-                MustTemperatureSensor *a = new MustTemperatureSensor(name, expected, timer, thr);
+                MustTemperatureSensor *a = new MustTemperatureSensor(name, expected, thr);
+                a->setTimer(timer);
                 a->push(v);
                 return a;
             }
@@ -162,28 +165,8 @@ Sensor *Sensor::load(string filename)
     }
     return 0;
 }
-Sensor *Sensor::newSensor()
+Sensor *Sensor::newSensor(string name, double expected, double thr, string sensorclass)
 {
-    cout << "Name of the new sensor: ";
-    string name;
-    cin >> name;
-    cout << "\nPossible classe:\n\tair-humidity\n\tsoil-humidity\n\tatm-pressure\n\tbarrel-pressure\n\tmust-temperature\n\tvines-temperature\n\twinery-temperature" << endl;
-    cout << "Type of sensor: ";
-    string sensorclass;
-    cin >> sensorclass;
-    double expected;
-    if (sensorclass == "atm-pressure")
-    {
-        expected = 1.0;
-    }
-    else
-    {
-        cout << "\nExpected value: ";
-        cin >> expected;
-    }
-    cout << "\nThreshold: ";
-    double thr;
-    cin >> thr;
     if (sensorclass == "air-humidity")
     {
         return new AirHumiditySensor(name, expected, thr);
@@ -198,10 +181,7 @@ Sensor *Sensor::newSensor()
     }
     if (sensorclass == "must-temperature")
     {
-        double timer;
-        cout << "\nTimer: ";
-        cin >> timer;
-        return new MustTemperatureSensor(name, expected, timer, thr);
+        return new MustTemperatureSensor(name, expected, thr);
     }
     if (sensorclass == "soil-humidity")
     {
@@ -217,30 +197,3 @@ Sensor *Sensor::newSensor()
     }
     return 0;
 }
-// string Sensor::stringSensor() const {
-//     string jsonString = "";
-//     jsonString += "\"sensorName\": \"" + getName() + "\",\n";
-//     jsonString += "\"expectedValue\": \"" + to_string(getExpValue()) + "\",\n";
-//     jsonString += "\"threshold\": \"" + to_string(getThreshold()) + "\",\n";
-//     jsonString += classSensor();
-//     jsonString += "\"data\": [\n";
-//     for (auto it = infoArray.begin(); it != infoArray.end(); ++it) {
-//         jsonString += "{\n";
-//         jsonString += "\"value\": \"" + to_string(it->getValue()) + "\",\n";
-//         jsonString += "\"time\": \"" + it->getTime().printTime() + "\"\n}";
-//         if (it != infoArray.end()-1) jsonString += ",";
-//         jsonString += "\n";
-//     }
-//     jsonString += "]\n";
-// }
-// void Sensor::saveSensor(string name) const {
-//     ofstream outputfile(name+".json");
-//     if(outputfile.is_open())
-//     {
-//         string jsonString = "{\n";
-//         jsonString += stringSensor();
-//         jsonString += "}";
-//         outputfile << jsonString;
-//     }
-//     cerr << "Error on saving the sensor" << endl;;
-// }

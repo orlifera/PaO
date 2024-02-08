@@ -13,6 +13,7 @@ public:
     Sensor(string, /*string,*/ double, double);
     // ritorna dato fornendo la posizione
     Data getInfo(int) const;
+    virtual string getIcon() const = 0;
     // ritorna nome
     string getName() const;
     // ritorna il vettore dati
@@ -45,7 +46,7 @@ public:
     // carica sensore
     static Sensor *load(string);
     // crea nuovo sensore
-    static Sensor *newSensor();
+    static Sensor *newSensor(string, double, double, string);
     // distruttore di default virtuale
     virtual ~Sensor() = default;
 };

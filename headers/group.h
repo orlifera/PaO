@@ -35,10 +35,10 @@ public:
     // carica grupppo
     static Group *load(string);
     // carica sensore nel gruppo
-    void loadSensor();
+    Sensor *loadSensor();
     // crea nuovo gruppo
     // static Group newGroup();
     // crea nuovo sensore nel gruppo
-    void newSensor();
+    Sensor *newSensor(string, double, double, string);
     // Group& operator=(const Group&);
 };
