@@ -19,7 +19,7 @@ debug/mainwindow.o
 debug/head.o
 debug/body.o
 debug/moc_mainwindow.o
-debug/moc_sensorButton.o
+debug/moc_amammt.o
 debug/moc_tab.o
 debug/moc_head.o
 debug/moc_body.o

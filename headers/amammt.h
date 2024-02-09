@@ -3,7 +3,7 @@
 #include "include.h"
 #include "qtHeader.h"
 
-class SensorBtn : public QPushButton
+class amammt : public QPushButton
 {
     Q_OBJECT
 private:
@@ -15,6 +15,6 @@ private:
     // QIcon getSensorIcon(const Sensor &sensor);
 
 public:
-    SensorBtn(Sensor *, QListWidget *, QWidget *parent = nullptr);
+    amammt(Sensor *, QListWidget *, QWidget *parent = nullptr);
     void setSensor(Sensor *);
 };

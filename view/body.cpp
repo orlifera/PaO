@@ -51,58 +51,64 @@ void BodyWidget::createRight(Sensor *sensor)
 {
     QWidget *container = new QWidget(right);
     QVBoxLayout *container_layout = new QVBoxLayout(container);
+    container_layout->setAlignment(Qt::AlignTop);
 
     QWidget *subcontainer1 = new QWidget(container);
     QWidget *subcontainer2 = new QWidget(container);
     QWidget *subcontainer3 = new QWidget(container);
+    QWidget *subcontainer4 = new QWidget(container);
 
     QHBoxLayout *subcont1_layout = new QHBoxLayout(subcontainer1);
     QHBoxLayout *subcont2_layout = new QHBoxLayout(subcontainer2);
     QHBoxLayout *subcont3_layout = new QHBoxLayout(subcontainer3);
+    QHBoxLayout *subcont4_layout = new QHBoxLayout(subcontainer4);
 
-    QLabel *subtitle = new QLabel(subcontainer1);
-    QLabel *subtitle_value = new QLabel(subcontainer1);
-    subtitle->setText("Sensor Name: ");
-    subtitle_value->setText(QString::fromStdString(sensor->getName()));
-    subtitle->setFont(QFont("Arial", 11, QFont::Bold));
-    subtitle_value->setFont(QFont("Arial", 10));
-    subtitle->setFixedWidth(150);
-    subtitle_value->setFixedWidth(150);
-    subtitle->setAlignment(Qt::AlignLeft);
-    subtitle_value->setAlignment(Qt::AlignLeft);
-    QPixmap *icon = new QPixmap("..\\icons\\" + QString::fromStdString(sensor->getIcon()));
+    QPixmap *icon = new QPixmap("C:\\Users\\david\\OneDrive\\Desktop\\PaO\\icons\\" + QString::fromStdString(sensor->getIcon()));
+    *icon = icon->scaled(QSize(25, 25), Qt::KeepAspectRatio);
     QLabel *iconLabel = new QLabel(subcontainer1);
     iconLabel->setPixmap(*icon);
+
+    QLabel *subtitle = new QLabel(subcontainer1);
+    subtitle->setText(QString::fromStdString(sensor->getName()));
+    subtitle->setFont(QFont("Arial", 14, QFont::Bold));
+    subtitle->setStyleSheet("text-transform: uppercase");
+    subtitle->setFixedWidth(150);
+    subtitle->setAlignment(Qt::AlignLeft);
+
+    subcont1_layout->addWidget(iconLabel);
+    subcont1_layout->addWidget(subtitle);
 
     QLabel *exp = new QLabel(subcontainer2);
     QLabel *exp_value = new QLabel(subcontainer2);
     exp->setText("Expected Value: ");
     exp_value->setText(QString::number(sensor->getExpValue(), 'f', 2));
-    exp->setFont(QFont("Arial", 11, QFont::Bold));
+    exp->setFont(QFont("Arial", 11));
     exp_value->setFont(QFont("Arial", 10));
     exp->setFixedWidth(150);
-    exp_value->setFixedWidth(150);
-    exp->setAlignment(Qt::AlignLeft);
-    exp_value->setAlignment(Qt::AlignLeft);
+    exp_value->setFixedWidth(50);
+
+    subcont2_layout->addWidget(exp);
+    subcont2_layout->addWidget(exp_value);
 
     QLabel *thr = new QLabel(subcontainer2);
     QLabel *thr_value = new QLabel(subcontainer2);
     thr->setText("Threshold: ");
     thr_value->setText(QString::number(sensor->getThreshold(), 'f', 2));
-    thr->setFont(QFont("Arial", 11, QFont::Bold));
+    thr->setFont(QFont("Arial", 11));
     thr_value->setFont(QFont("Arial", 10));
     thr->setFixedWidth(150);
-    thr_value->setFixedWidth(150);
-    thr->setAlignment(Qt::AlignLeft);
-    thr_value->setAlignment(Qt::AlignLeft);
+    thr_value->setFixedWidth(50);
 
-    QPushButton *generateBtn = new QPushButton("Generate", subcontainer3);
+    subcont2_layout->addWidget(thr);
+    subcont2_layout->addWidget(thr_value);
+
+    QPushButton *generateBtn = new QPushButton("Generate", subcontainer4);
     generateBtn->setFixedWidth(100);
-    QPushButton *saveBtn = new QPushButton("Save Sensor", subcontainer3);
+    QPushButton *saveBtn = new QPushButton("Save Sensor", subcontainer4);
     saveBtn->setFixedWidth(100);
-    QPushButton *deleteBtn = new QPushButton("Delete Sensor", subcontainer3);
+    QPushButton *deleteBtn = new QPushButton("Delete Sensor", subcontainer4);
     deleteBtn->setFixedWidth(100);
-    QPushButton *modifyBtn = new QPushButton("Modify Sensor", subcontainer3);
+    QPushButton *modifyBtn = new QPushButton("Modify Sensor", subcontainer4);
     modifyBtn->setFixedWidth(100);
 
     connect(generateBtn, &QPushButton::pressed, [this, sensor]()
@@ -114,30 +120,29 @@ void BodyWidget::createRight(Sensor *sensor)
     connect(modifyBtn, &QPushButton::pressed, [this, sensor]()
             { modifySensor(sensor); });
 
-    subcont1_layout->addWidget(subtitle);
-    subcont1_layout->addWidget(subtitle_value);
-    subcont1_layout->addWidget(iconLabel);
+    QWidget *chartView = createChart(sensor);
 
-    subcont2_layout->addWidget(exp);
-    subcont2_layout->addWidget(exp_value);
-    subcont2_layout->addWidget(thr);
-    subcont2_layout->addWidget(thr_value);
+    subcont3_layout->addWidget(chartView, 0, Qt::AlignCenter);
+
+    subcont4_layout->addWidget(generateBtn);
+    subcont4_layout->addWidget(saveBtn);
+    subcont4_layout->addWidget(deleteBtn);
+    subcont4_layout->addWidget(modifyBtn);
 
     subcontainer1->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    subcontainer1->setFixedWidth(250);
     subcontainer2->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-
-    subcont3_layout->addWidget(generateBtn);
-    subcont3_layout->addWidget(saveBtn);
-    subcont3_layout->addWidget(deleteBtn);
-    subcont3_layout->addWidget(modifyBtn);
+    subcontainer2->setFixedWidth(500);
 
     subcontainer1->setLayout(subcont1_layout);
     subcontainer2->setLayout(subcont2_layout);
     subcontainer3->setLayout(subcont3_layout);
+    subcontainer4->setLayout(subcont4_layout);
 
     container_layout->addWidget(subcontainer1);
     container_layout->addWidget(subcontainer2);
     container_layout->addWidget(subcontainer3);
+    container_layout->addWidget(subcontainer4);
 
     rightlayout->addWidget(container);
     right->setLayout(rightlayout);
@@ -194,8 +199,8 @@ void BodyWidget::newSensor()
     QLineEdit *sensorName = new QLineEdit(&dialog);
     QLineEdit *sensorExp = new QLineEdit(&dialog);
     QLineEdit *sensorThr = new QLineEdit(&dialog);
-
     QComboBox *classBox = new QComboBox(&dialog);
+
     classBox->addItem("air-humidity");
     classBox->addItem("soil-humidity");
     classBox->addItem("atm-pressure");
@@ -250,7 +255,6 @@ void BodyWidget::loadSensor()
         qDebug() << "Error: 'group' pointer is null.";
         return;
     }
-
     Sensor *s = group->loadSensor(path.toStdString());
 
     if (s)
@@ -266,6 +270,7 @@ void BodyWidget::loadSensor()
 
 void BodyWidget::generate(Sensor *sensor)
 {
+    sensor->getArray().clear();
     sensor->generate();
     refresh();
     createRight(sensor);
@@ -311,19 +316,20 @@ void BodyWidget::deleteSensor(Sensor *sensor)
             QWidget *widget = listWidget->itemWidget(item);
             QPushButton *sensorBtn = qobject_cast<QPushButton *>(widget);
 
-            // Check if the QPushButton's text matches the sensor's name
             if (sensorBtn && sensorBtn->text() == QString::fromStdString(name))
             {
-                // Remove the item from the listWidget
-                delete listWidget->takeItem(i);
+                listWidget->removeItemWidget(item);
                 break;
             }
         }
 
-        if (tab->getGroup()->find(name))
-            tab->getGroup()->removeSensor(sensor);
+        if (sensor)
+        {
+            if (tab->getGroup()->find(name))
+                tab->getGroup()->removeSensor(sensor);
+            refresh();
+        }
     }
-    refresh();
 }
 
 void BodyWidget::modifySensor(Sensor *sensor)
@@ -380,9 +386,9 @@ void BodyWidget::modifySensor(Sensor *sensor)
                 sensor->setThreshold(text.toDouble());
             }
         }
+        refresh();
+        createRight(sensor);
     }
-    refresh();
-    createRight(sensor);
 }
 
 void BodyWidget::refresh()
@@ -399,4 +405,44 @@ void BodyWidget::refresh()
     {
         connection(*it);
     }
+}
+
+QWidget *BodyWidget::createChart(Sensor *sensor)
+{
+    QChart *chart = new QChart();
+    chart->setTitle(QString::fromStdString(sensor->getName()) + " Chart");
+    chart->legend()->setVisible(false);
+
+    QLineSeries *series = new QLineSeries();
+    for (const Data &d : sensor->getArray())
+    {
+        series->append(stoi(d.getTime()), d.getValue());
+    }
+
+    chart->addSeries(series);
+
+    QValueAxis *axisX = new QValueAxis;
+    axisX->setTitleText("Time (sec)");
+    chart->addAxis(axisX, Qt::AlignBottom);
+    series->attachAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setTitleText(QString::fromStdString(sensor->getUnit()));
+    // axisY->setMin(0);
+    // axisY->setMax(50);
+    chart->addAxis(axisY, Qt::AlignLeft);
+    series->attachAxis(axisY);
+
+    series->setPen(QPen(QColor(Qt::blue), 2));
+    series->setPointsVisible(true);
+    series->setPointLabelsFormat("@yPoint");
+    series->setPointLabelsVisible(true);
+    series->setPointLabelsFormat("%.2f");
+    series->setUseOpenGL(true);
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setMinimumSize(800, 400);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    return chartView;
 }

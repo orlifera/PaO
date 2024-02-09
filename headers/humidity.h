@@ -9,4 +9,5 @@ public:
     HumiditySensor(string, bool, double, double);
     bool isCapacity() const; // check se sensore è capacitativo o meno
     string getIcon() const;
+    string getUnit() const;
 };

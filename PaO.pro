@@ -30,7 +30,7 @@ HEADERS += headers/air.h \
            headers/pressure.h \
            headers/qtHeader.h \
            headers/sensor.h \
-           headers/sensorButton.h \
+           headers/amammt.h \
            headers/tab.h \
            headers/head.h \
            headers/body.h \

@@ -9,4 +9,5 @@ public:
     TemperatureSensor(string, bool, double, double);
     bool isContact() const; // check se il sensore è a contatto o meno
     string getIcon() const;
+    string getUnit() const;
 };

@@ -11,10 +11,17 @@ void Group::removeSensor(Sensor *s)
 }
 void Group::removeSensor(string n)
 {
-    for (auto it = sensors.begin(); it != sensors.end(); it++)
+    auto it = sensors.begin();
+    while (it != sensors.end())
     {
         if ((*it)->getName() == n)
+        {
             it = sensors.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
 }
 void Group::removeSensor(int pos)

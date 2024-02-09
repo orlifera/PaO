@@ -21,6 +21,7 @@ public:
     void filterList(const QString &);
     void connection(Sensor *);
     void refresh();
+    QWidget *createChart(Sensor *);
 private slots:
     void newSensor();
     void loadSensor();

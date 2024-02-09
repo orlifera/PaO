@@ -11,6 +11,7 @@ double AtmPressureSensor::meanPoisson = 0.1;
 // questo per simulare cambi di pressione (alta o bassa)
 void AtmPressureSensor::generate()
 {
+    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     normal_distribution<double> gauss(getExpValue(), stdDeviation);
@@ -20,7 +21,7 @@ void AtmPressureSensor::generate()
     for (double i = 0.0; i < 24.0; i += 1.5)
     {
         h = int(i);
-        m = int((i - h) * 6);
+        m = int(abs((i - h)) * 6);
         Data d;
         d.setTime(h, m);
         double pressure = gauss(generator);

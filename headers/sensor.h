@@ -14,6 +14,7 @@ public:
     // ritorna dato fornendo la posizione
     Data getInfo(int) const;
     virtual string getIcon() const = 0;
+    virtual string getUnit() const = 0;
     // ritorna nome
     string getName() const;
     // ritorna il vettore dati

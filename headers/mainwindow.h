@@ -10,6 +10,7 @@ class MainWindow : public QMainWindow
 private:
     QTabWidget *tabs;
     QLabel *welcome;
+    bool checked;
 
 public:
     MainWindow(QWidget *parent = 0);

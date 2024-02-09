@@ -19,7 +19,7 @@ release/mainwindow.o
 release/head.o
 release/body.o
 release/moc_mainwindow.o
-release/moc_sensorButton.o
+release/moc_amammt.o
 release/moc_tab.o
 release/moc_head.o
 release/moc_body.o

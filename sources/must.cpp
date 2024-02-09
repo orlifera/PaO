@@ -6,6 +6,7 @@ double MustTemperatureSensor::timer = 24.0;
 // funzione che genera dati secondo una distribuzione uniforme
 void MustTemperatureSensor::generate()
 {
+    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     uniform_real_distribution<double> distribution(getExpValue() - range / 2.0, getExpValue() + range / 2.0);
@@ -14,7 +15,7 @@ void MustTemperatureSensor::generate()
     for (double i = 0.0; i < timer; i += 0.5)
     {
         h = int(i);
-        m = int((i - h) * 6);
+        m = int(abs((i - h)) * 60);
         Data d;
         d.setTime(h, m);
         double temperature = distribution(generator);

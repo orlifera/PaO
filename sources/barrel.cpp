@@ -7,11 +7,12 @@ double BarrelPressureSensor::stdDeviation = 0.5;
 // cioè dati che devono rimanere intorno al valore desiderato
 void BarrelPressureSensor::generate()
 {
+    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     normal_distribution<double> distribution(0.0, stdDeviation);
     // misurazine ogni 3 ore
-    for (unsigned int hour = 0; hour < 24; hour += 3)
+    for (unsigned int hour = 0; hour < 24; hour += 2)
     {
         Data d;
         d.setTime(hour);
