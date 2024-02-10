@@ -30,13 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *actionOpenGroup = menu->addAction(tr("Open Group"));
     QAction *actionQuit = menu->addAction(tr("Quit"));
 
-    QFont menuBarFont = menuBar->font();
-    menuBarFont.setPointSize(12);
-    menuBar->setFont(menuBarFont);
-
-    QFont menuFont = menu->font();
-    menuFont.setPointSize(12);
-    menu->setFont(menuFont);
+    menuBar->setStyleSheet("font-size:12pt;");
+    menu->setStyleSheet("font-size:12pt;");
 
     connect(actionOpenGroup, &QAction::triggered, this, &MainWindow::openGroup);
     connect(actionNewGroup, &QAction::triggered, this, &MainWindow::newGroup);
@@ -65,8 +60,8 @@ void MainWindow::closeTab(int index)
 
     warning->setAlignment(Qt::AlignCenter);
     warning->setFixedWidth(300);
-    yesBtn->setFixedWidth(50);
-    noBtn->setFixedWidth(50);
+    yesBtn->setFixedWidth(75);
+    noBtn->setFixedWidth(75);
 
     QSpacerItem *spacer = new QSpacerItem(10, 10, QSizePolicy::Expanding, QSizePolicy::Preferred);
 

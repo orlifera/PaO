@@ -433,7 +433,7 @@ QWidget *BodyWidget::createChart(Sensor *sensor)
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
-    series->setPen(QPen(QColor(Qt::blue), 2));
+    series->setPen(QPen(QColor(Qt::red), 2));
     series->setPointsVisible(true);
     series->setPointLabelsFormat("@yPoint");
     series->setPointLabelsVisible(true);

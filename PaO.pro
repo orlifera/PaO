@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = Progetto
+TARGET = Tell_Me_Wine
 INCLUDEPATH += .
 QT += widgets
 QT += charts
@@ -30,7 +30,6 @@ HEADERS += headers/air.h \
            headers/pressure.h \
            headers/qtHeader.h \
            headers/sensor.h \
-           headers/amammt.h \
            headers/tab.h \
            headers/head.h \
            headers/body.h \
