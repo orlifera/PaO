@@ -30,5 +30,5 @@ QJsonObject WineryTemperatureSensor::classSensor() const
     QJsonObject classObj;
     classObj["class"] = className;
     classObj["contact"] = classInfo;
-    return classObj;
+    return classObj; //
 }
