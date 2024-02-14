@@ -6,6 +6,6 @@ double Data::getValue() const { return value; }
 
 void Data::setValue(double d) { value = d; }
 
-string Data::getTime() const { return time.printTime(); }
+int Data::getTime() const { return time.getTime(); }
 
 void Data::setTime(unsigned int h, unsigned int m, unsigned int s) { time = Time(h, m, s); }

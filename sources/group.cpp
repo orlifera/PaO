@@ -125,7 +125,8 @@ Group *Group::load(string filename)
                 {
                     QJsonObject dataObj = entry.toObject();
                     // ottenimento del tempo
-                    Time t(dataObj["time"].toInt());
+                    Time t;
+                    t.setTime(dataObj["time"].toInt());
                     // ottenimento del valore
                     double val = dataObj["value"].toDouble();
                     sensorV.push_back(Data(val, t));

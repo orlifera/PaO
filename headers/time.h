@@ -16,5 +16,7 @@ public:
     // ritorna i secondi
     unsigned int Secs() const;
     // ritorna una stringa con l'orario
-    string printTime() const;
+    unsigned int getTime() const;
+    // setting del time come costruttore alternativo
+    void setTime(unsigned int);
 };

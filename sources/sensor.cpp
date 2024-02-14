@@ -94,7 +94,7 @@ QJsonObject Sensor::writeSensor() const
     {
         QJsonObject infoData;
         // tempo
-        infoData["time"] = QString::fromStdString(data.getTime());
+        infoData["time"] = data.getTime();
         // valore effettivo
         infoData["value"] = data.getValue();
         // push dei dati nel vettore
@@ -159,7 +159,8 @@ Sensor *Sensor::load(string filename)
             {
                 QJsonObject dataObj = entry.toObject();
                 // ottenimento del tempo
-                Time t(dataObj["time"].toInt());
+                Time t;
+                t.setTime(dataObj["time"].toInt());
                 // ottenimento del valore effettivo
                 double val = dataObj["value"].toDouble();
                 v.push_back(Data(val, t));

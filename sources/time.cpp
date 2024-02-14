@@ -14,4 +14,6 @@ unsigned int Time::Mins() const { return (sec / 60) % 60; }
 
 unsigned int Time::Secs() const { return sec % 60; }
 
-string Time::printTime() const { return to_string(sec); }
+unsigned int Time::getTime() const { return sec; }
+
+void Time::setTime(unsigned int seconds) { sec = seconds; }

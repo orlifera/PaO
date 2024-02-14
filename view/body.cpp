@@ -112,7 +112,8 @@ void BodyWidget::createRight(Sensor *sensor)
     QHBoxLayout *subcont4_layout = new QHBoxLayout(subcontainer4);
 
     // icona
-    QPixmap *icon = new QPixmap("C:\\Users\\david\\OneDrive\\Desktop\\PaO\\icons\\" + QString::fromStdString(sensor->getIcon()));
+    QDir::setCurrent(QCoreApplication::applicationDirPath());
+    QPixmap *icon = new QPixmap("../icons/" + QString::fromStdString(sensor->getIcon()));
     *icon = icon->scaled(QSize(25, 25), Qt::KeepAspectRatio);
     QLabel *iconLabel = new QLabel(subcontainer1);
     iconLabel->setPixmap(*icon);
@@ -472,14 +473,21 @@ QWidget *BodyWidget::createChart(Sensor *sensor)
     {
         double value = d.getValue();
         // aggiungo il dato al grafico
-        series->append(stoi(d.getTime()), value);
+        series->append(d.getTime(), value);
         // trovo minimo e massimo
         minY = min(minY, value);
         maxY = max(maxY, value);
     }
+
     // allargo la visualizzazione del grafico
+    double expectedValue = sensor->getExpValue();
+    double upperThresholdValue = expectedValue + sensor->getThreshold();
+    double lowerThresholdValue = expectedValue - sensor->getThreshold();
+    minY = min(minY, lowerThresholdValue);
+    maxY = max(maxY, upperThresholdValue);
     minY--;
     maxY++;
+
     chart->addSeries(series);
 
     // asse x
@@ -507,9 +515,6 @@ QWidget *BodyWidget::createChart(Sensor *sensor)
 
     if (!series->points().isEmpty())
     {
-        double expectedValue = sensor->getExpValue();
-        double upperThresholdValue = expectedValue + sensor->getThreshold();
-        double lowerThresholdValue = expectedValue - sensor->getThreshold();
 
         // linea che identifica la soglia superiore
         QLineSeries *upperThreshold = new QLineSeries();
