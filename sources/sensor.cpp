@@ -2,58 +2,105 @@
 #include "../headers/group.h"
 
 Sensor::Sensor(string n, /*string c*/ double ex, double th) : name(n), expectedValue(ex), threshold(th) {}
+
 string Sensor::getName() const { return name; }
-// string Sensor::getCategory() const { return category; }
+
 vector<Data> Sensor::getArray() const { return infoArray; }
+
+void Sensor::clear()
+{
+    vector<Data>().swap(infoArray); // effettua uno swap con un vettore vuoto
+}
+
 Data Sensor::getInfo(int i) const { return infoArray[i]; }
+
 double Sensor::getExpValue() const { return expectedValue; }
+
 double Sensor::getThreshold() const { return threshold; }
-void Sensor::setExpValue(double val) { expectedValue = val; }
-void Sensor::setThreshold(double th) { threshold = th; }
-void Sensor::rename(string n) { name = n; }
+
+void Sensor::setExpValue(double val)
+{
+    expectedValue = val;
+}
+
+void Sensor::setThreshold(double th)
+{
+    threshold = th;
+}
+
+void Sensor::rename(string n)
+{
+    name = n;
+}
+
 void Sensor::push(Data &d) { infoArray.push_back(d); }
+
 void Sensor::push(vector<Data> v) { infoArray = v; }
-// funzione che ritorna:
-// 1 se l'ultimo valore è superiore del valore atteso, di una certa soglia
-//-1 se l'ultimo valore è inferiore del valore atteso, di una certa soglia
-// 0 se l'ultimo valore è compreso nel range della soglia
+
+// funzione che conta numero di picchi che sono superiori e quelli inferiori al valore atteso oltre la soglia
+// se non ce ne sono ritorna 0
+// se ce ne sono e i picchi positivi sono maggiori di quelli negativi ritorna 1
+// se ce ne sono e i picchi negativi sono maggiori di quelli positivi ritorna -1
+// se ce ne sono e sono uguali allora ritorna 1 se il picco piu grande positivo supera quello negativo e -1 altrimenti
 int Sensor::isInThreshold() const
 {
-    if (infoArray[infoArray.size() - 1].getValue() > expectedValue + threshold)
+    int countPos = 0, countNeg = 0;
+    double exepP = expectedValue;
+    double exepN = expectedValue;
+    for (auto it = infoArray.begin(); it != infoArray.end(); ++it)
+    {
+        double current = it->getValue();
+        if (current > expectedValue + threshold)
+        {
+            countPos++;
+            if (exepP < current)
+                exepP = current;
+        }
+        else if (current < expectedValue - threshold)
+        {
+            countNeg++;
+            if (exepN > current)
+                exepN = current;
+        }
+    }
+    if (countPos > countNeg)
         return 1;
-    else if (infoArray[infoArray.size() - 1].getValue() < expectedValue - threshold)
+    else if (countPos < countNeg)
         return -1;
+    else if (countPos != 0 && countNeg != 0 && countPos == countNeg)
+        return abs(exepP - expectedValue) > abs(exepN - expectedValue) ? 1 : -1;
     return 0;
 }
+
 QJsonObject Sensor::writeSensor() const
 {
     QJsonObject sensor;
-    // gets sensor's name
+    // nome del sensore
     sensor["sensorName"] = QString::fromStdString(getName());
-    // gets sensor's expected value
+    // valore atteso
     sensor["expected value"] = getExpValue();
-    // gets sensor's threshold
+    // soglia
     sensor["threshold"] = getThreshold();
-    // gets sensor's class
+    // classe
     QJsonObject classObj = classSensor();
     for (auto it = classObj.begin(); it != classObj.end(); ++it)
     {
         sensor.insert(it.key(), it.value());
     }
-    // creates an infoArray
+    // crea infoArray
     QJsonArray info;
-    // for each data in infoArray
+    // per ogni dato in infoArray
     for (const auto &data : getArray())
     {
         QJsonObject infoData;
-        // gets info's time
+        // tempo
         infoData["time"] = QString::fromStdString(data.getTime());
-        // gets info's value
+        // valore effettivo
         infoData["value"] = data.getValue();
-        // pushes the data in the array
+        // push dei dati nel vettore
         info.append(infoData);
     }
-    // assigns infoArray as sensor's info
+    // assegna le info all'array
     sensor["info"] = info;
     return sensor;
 }
@@ -64,14 +111,14 @@ void Sensor::save(string filename) const
         remove(filename);
     if (filename.find(".json") == string::npos)
         filename += ".json";
-    // new file "filename"
+    // nuovo file "filename"
     ofstream outFile(filename);
     if (outFile.is_open())
     {
         QJsonObject sensor = writeSensor();
-        // pushes the group in the jsonDocument
+        // push del gruppo nel jsonDocument
         QJsonDocument jsonDoc(sensor);
-        // insert data in file
+        // inserimento dati nel file
         outFile << jsonDoc.toJson().toStdString();
         outFile.close();
     }
@@ -80,6 +127,7 @@ void Sensor::save(string filename) const
         cerr << "Error on saving the sensor" << endl;
     }
 }
+
 Sensor *Sensor::load(string filename)
 {
     ifstream inFile(filename);
@@ -95,20 +143,30 @@ Sensor *Sensor::load(string filename)
         if (!jsonDoc.isNull() && jsonDoc.isObject())
         {
             QJsonObject sensorObj = jsonDoc.object();
+            // ottenimento nome
             string name = sensorObj["sensorName"].toString().toStdString();
+            // ottenimento del valore atteso
             double expected = sensorObj["expected value"].toDouble();
+            // ottenimento della soglia
             double thr = sensorObj["threshold"].toDouble();
+            // ottenimento della classe
             string className = sensorObj["class"].toString().toStdString();
             vector<Data> v;
+            // ottenimento dell'array dati
             QJsonArray dataArray = sensorObj["info"].toArray();
+            // per ogni dato
             for (auto entry : dataArray)
             {
                 QJsonObject dataObj = entry.toObject();
+                // ottenimento del tempo
                 Time t(dataObj["time"].toInt());
+                // ottenimento del valore effettivo
                 double val = dataObj["value"].toDouble();
                 v.push_back(Data(val, t));
             }
+            // chiusura file
             inFile.close();
+            // creazione dello specifico sensore
             if (className == "air-humidity")
             {
                 AirHumiditySensor *a = new AirHumiditySensor(name, expected, thr);
@@ -165,6 +223,7 @@ Sensor *Sensor::load(string filename)
     }
     return 0;
 }
+
 Sensor *Sensor::newSensor(string name, double expected, double thr, string sensorclass)
 {
     if (sensorclass == "air-humidity")

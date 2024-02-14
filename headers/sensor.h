@@ -1,24 +1,30 @@
 #pragma once
 #include "data.h"
-// sensore generico
+#include "sensorvisitor.h"
+
+// classe che rappresenta un sensore generico
 class Sensor
 {
 private:
-    string name; // nome che lo identifica
-    // string category;
+    string name;            // nome del sensore
     vector<Data> infoArray; // valori effettivi - dati misurati
     double expectedValue;   // valore atteso dallo specifico sensore
     double threshold;       // soglia
+
 public:
-    Sensor(string, /*string,*/ double, double);
+    Sensor(string, double, double);
     // ritorna dato fornendo la posizione
     Data getInfo(int) const;
+    // ritorna stringa con il nome dell'icona differenziato per tipologia di sensore
     virtual string getIcon() const = 0;
+    // ritorna stringa con unità di misura per tipologia di sensore
     virtual string getUnit() const = 0;
     // ritorna nome
     string getName() const;
     // ritorna il vettore dati
     vector<Data> getArray() const;
+    // reset del vettore dei dati
+    void clear();
     // ritorna il valore atteso
     double getExpValue() const;
     // ritorna la soglia
@@ -37,8 +43,7 @@ public:
     void push(Data &);
     // permette il push di un vettore di dati ovvero l'assegnazione
     void push(vector<Data>);
-    // string stringSensor() const;   // ritorna campi dati sensori
-    // ritorna il nome della classe polimorficamente
+    // ritorna il nome della classe e caratteristiche specifiche del sensore polimorficamente
     virtual QJsonObject classSensor() const = 0;
     // scrive su un oggetto json le caratteristiche del sensore
     QJsonObject writeSensor() const;
@@ -48,6 +53,8 @@ public:
     static Sensor *load(string);
     // crea nuovo sensore
     static Sensor *newSensor(string, double, double, string);
+    // accettazione del visitor per polimorfismo nella GUI
+    virtual void accept(SensorVisitor &) = 0;
     // distruttore di default virtuale
     virtual ~Sensor() = default;
 };

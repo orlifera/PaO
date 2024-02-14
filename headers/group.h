@@ -6,11 +6,13 @@
 #include "soil.h"
 #include "vines.h"
 #include "winery.h"
+
+// classe che identifica un gruppo di sensori dotato di funzione per la loro gestione
 class Group
 {
 private:
-    string groupName;
-    vector<Sensor *> sensors;
+    string groupName;         // nome del gruppo
+    vector<Sensor *> sensors; // vettore di puntatori ai sensori contenuti nel gruppo
 
 public:
     Group(string);
@@ -36,9 +38,6 @@ public:
     static Group *load(string);
     // carica sensore nel gruppo
     Sensor *loadSensor(string);
-    // crea nuovo gruppo
-    // static Group newGroup();
     // crea nuovo sensore nel gruppo
     Sensor *newSensor(string, double, double, string);
-    // Group& operator=(const Group&);
 };

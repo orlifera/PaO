@@ -1,15 +1,17 @@
 #include "../headers/soil.h"
+#include "../headers/sensorvisitor.h"
 
 // tutti i sensori per l'umidità del terreno non sono capacitativi
 SoilHumiditySensor::SoilHumiditySensor(string n, double humidity, double th) : HumiditySensor(n, false, humidity, th) {}
+
 double SoilHumiditySensor::logStdDeviation = 0.5;
+
 // funzione che genera dati secondo una distribuzione log-normale
 // questo perché la distribuzione log-normale descrive bene
 // la variazione dell'umidità del terreno che dipende da un gran numero
 // di fattori indipendenti come il tipo di irrigazione, la locazione, la flora ecc..
 void SoilHumiditySensor::generate()
 {
-    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     lognormal_distribution<double> distribution(getExpValue(), logStdDeviation);
@@ -24,6 +26,7 @@ void SoilHumiditySensor::generate()
         push(d);
     }
 }
+
 QJsonObject SoilHumiditySensor::classSensor() const
 {
     QString className = "soil-humidity";
@@ -32,4 +35,9 @@ QJsonObject SoilHumiditySensor::classSensor() const
     classObj["class"] = className;
     classObj["capacitative"] = classInfo;
     return classObj;
+}
+
+void SoilHumiditySensor::accept(SensorVisitor &visitor)
+{
+    visitor.visitSoil();
 }

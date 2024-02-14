@@ -3,7 +3,6 @@ release/air.o
 release/atm.o
 release/barrel.o
 release/data.o
-release/functions.o
 release/group.o
 release/humidity.o
 release/must.o
@@ -18,6 +17,7 @@ release/tab.o
 release/mainwindow.o
 release/head.o
 release/body.o
+release/sensorinfo.o
 release/moc_mainwindow.o
 release/moc_tab.o
 release/moc_head.o

@@ -1,9 +1,12 @@
 #include "../headers/atm.h"
+#include "../headers/sensorvisitor.h"
 
 // tutti i sensori per la pressione atmosferica hanno come valore atteso 1.0
 AtmPressureSensor::AtmPressureSensor(string n, double th) : PressureSensor(n, 1.0, th) {}
+
 double AtmPressureSensor::stdDeviation = 2.0;
 double AtmPressureSensor::meanPoisson = 0.1;
+
 // funzione che genera dati secondo una distribuzione mista
 // viene utilizzata una distribuzione normale nella quale
 // alcuni valori vengono modificati da eventi improvvisi
@@ -11,7 +14,6 @@ double AtmPressureSensor::meanPoisson = 0.1;
 // questo per simulare cambi di pressione (alta o bassa)
 void AtmPressureSensor::generate()
 {
-    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     normal_distribution<double> gauss(getExpValue(), stdDeviation);
@@ -34,10 +36,16 @@ void AtmPressureSensor::generate()
         push(d);
     }
 }
+
 QJsonObject AtmPressureSensor::classSensor() const
 {
     QString className = "atm-pressure";
     QJsonObject classObj;
     classObj["class"] = className;
     return classObj;
+}
+
+void AtmPressureSensor::accept(SensorVisitor &visitor)
+{
+    visitor.visitAtm();
 }

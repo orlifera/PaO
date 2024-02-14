@@ -24,6 +24,7 @@ void Tab::save()
     dialog.setWindowTitle("Save Group");
     dialog.setNameFilter("JSON files (*.json)");
 
+    // nome di default
     dialog.selectFile("untitled");
 
     if (dialog.exec() == QDialog::Accepted)
@@ -60,6 +61,7 @@ void Tab::deleteGroup()
         delete group;
         if (tabIndex != -1)
         {
+            // rimuove la tab dal tabwidget
             tabs->removeTab(tabIndex);
         }
         delete this;

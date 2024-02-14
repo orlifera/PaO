@@ -16,7 +16,8 @@
 using std::acos; // arcocoseno
 using std::max;
 using std::min;
-using std::sin; // seno
+using std::numeric_limits; // limiti estremi della rappresentazione double
+using std::sin;            // seno
 // generatori randomici
 using std::default_random_engine;
 using std::random_device;
@@ -27,17 +28,15 @@ using std::poisson_distribution;
 using std::uniform_real_distribution;
 // keywords
 using std::cerr;
-using std::cout;
 using std::cin;
+using std::cout;
 using std::endl;
 using std::ifstream;
+using std::istreambuf_iterator;
 using std::ofstream;
 using std::ostream;
-using std::istreambuf_iterator;
-using std::filesystem::remove;
-using std::filesystem::exists;
 using std::string;
 using std::to_string;
 using std::vector;
-// using std::stringstream;
-// using std::setw;
+using std::filesystem::exists;
+using std::filesystem::remove;

@@ -1,4 +1,4 @@
-#include "../headers/mainWindow.h"
+#include "../headers/mainwindow.h"
 #include "../headers/tab.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(mainWidget);
     mainLayout->addWidget(tabs);
 
+    // messaggio di benvenuto
     welcome = new QLabel(mainWidget);
     welcome->setText("There are no open groups");
     welcome->setStyleSheet("font-size: 16pt;");
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     firstView();
 
+    // menu
     QMenuBar *menuBar = new QMenuBar(this);
     menuBar->setFixedHeight(30);
     QMenu *menu = menuBar->addMenu("Menu");
@@ -38,11 +40,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(actionQuit, &QAction::triggered, this, &MainWindow::closeApp);
 
     setMenuBar(menuBar);
-    Group *g = Group::load("C:\\Users\\david\\OneDrive\\Desktop\\PaO\\fss.json");
-    Tab *t = new Tab(g, tabs, "../ffs.json");
-    tabs->addTab(t, QString::fromStdString(g->getGroupName()));
-    tabs->setCurrentWidget(t);
-    firstView();
+    // Group *g = Group::load("C:\\Users\\david\\OneDrive\\Desktop\\PaO\\fss.json");
+    // Tab *t = new Tab(g, tabs, "../fss.json");
+    // tabs->addTab(t, QString::fromStdString(g->getGroupName()));
+    // tabs->setCurrentWidget(t);
+    // firstView();
 }
 
 void MainWindow::closeTab(int index)
@@ -51,6 +53,8 @@ void MainWindow::closeTab(int index)
     QDialog dialog(this);
 
     QGridLayout *layout = new QGridLayout(&dialog);
+
+    // conferma di chiusura della tab
     dialog.setWindowTitle("Confirmation");
     QLabel *warning = new QLabel(&dialog);
     warning->setText("Make sure to save this group.\nBy closing this tab without saving\nyou'll lose all current changes.\nDo you want to close the tab?");
@@ -73,11 +77,14 @@ void MainWindow::closeTab(int index)
 
     connect(yesBtn, &QPushButton::clicked, &dialog, &QDialog::accept);
     connect(noBtn, &QPushButton::clicked, &dialog, &QDialog::reject);
+    // imposto il bool a true
     connect(checkBtn, &QPushButton::clicked, [this]()
             { checked = true; });
 
+    // se si schiaccia su YES o si ha in precedenza settato il pop-up in DON?T ASK THIS AGAIN
     if (checked || dialog.exec() == QDialog::Accepted)
     {
+        // rimozione della tab
         tabs->removeTab(index);
         firstView();
         delete widget;

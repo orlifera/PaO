@@ -1,9 +1,12 @@
 #include "../headers/air.h"
+#include "../headers/sensorvisitor.h"
 
 // tutti i sensori per l'umidità dell'aria sono capacitativi
 AirHumiditySensor::AirHumiditySensor(string n, double humidity, double th) : HumiditySensor(n, true, humidity, th) {}
+
 double AirHumiditySensor::alpha = 5.0;
 double AirHumiditySensor::beta = 2.0;
+
 // funzione che riceve alpha, beta e un generatore randomico
 // utilizzando una distribuzione reale uniforme
 // restituisce un valore secondo una distribuzione beta
@@ -16,12 +19,12 @@ double AirHumiditySensor::beta_distribution(double a, double b, default_random_e
     double y = pow(u2, 1.0 / b);
     return x / (x + y);
 }
+
 // generatore dei dati che utilizza una distribuzione beta
 // questo perché è la distribuzione tra valore 0.0 e 1.0 che meglio
 // descrive e rappresenta i dati e le variazioni di umidità nell'aria
 void AirHumiditySensor::generate()
 {
-    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     // 4 misurazioni al giorno
@@ -35,6 +38,7 @@ void AirHumiditySensor::generate()
         push(d);
     }
 }
+
 QJsonObject AirHumiditySensor::classSensor() const
 {
     QString className = "air-humidity";
@@ -43,4 +47,9 @@ QJsonObject AirHumiditySensor::classSensor() const
     classObj["class"] = className;
     classObj["capacitative"] = classInfo;
     return classObj;
+}
+
+void AirHumiditySensor::accept(SensorVisitor &visitor)
+{
+    visitor.visitAir();
 }

@@ -1,5 +1,6 @@
 #include "../headers/body.h"
 #include "../headers/tab.h"
+#include "../headers/sensorinfo.h"
 
 BodyWidget::BodyWidget(Tab *t, QWidget *parent) : QWidget(parent), tab(t)
 {
@@ -22,29 +23,76 @@ void BodyWidget::createLeft()
     QLineEdit *searchBar = new QLineEdit(left);
     searchBar->setPlaceholderText("Search...");
     searchBar->setFixedHeight(40);
+
     listWidget = new QListWidget(left);
     vector<Sensor *> sensors = tab->getVector();
+    // per ogni sensore creo un bottone che connette parte destra con sinistra
     for (auto it = sensors.begin(); it != sensors.end(); ++it)
     {
         connection(*it);
     }
+
     connect(searchBar, &QLineEdit::textChanged, this, &BodyWidget::filterList);
     layout->addWidget(searchBar);
+
     QPushButton *addBtn = new QPushButton("Add", listWidget);
     addBtn->setFixedHeight(40);
     QPushButton *loadBtn = new QPushButton("Load", listWidget);
     loadBtn->setFixedHeight(40);
+
     layout->addWidget(listWidget);
+
     QWidget *btnContainer = new QWidget(left);
     QHBoxLayout *layoutBtn = new QHBoxLayout(btnContainer);
+
     layoutBtn->addWidget(addBtn);
     layoutBtn->addWidget(loadBtn);
     btnContainer->setLayout(layoutBtn);
+
     layout->addWidget(btnContainer);
     left->setLayout(layout);
 
     connect(addBtn, &QPushButton::pressed, this, &BodyWidget::newSensor);
     connect(loadBtn, &QPushButton::pressed, this, &BodyWidget::loadSensor);
+}
+
+void BodyWidget::connection(Sensor *sensor)
+{
+    QPushButton *btn = new QPushButton(QString::fromStdString(sensor->getName()), listWidget);
+    btn->setFixedHeight(40);
+    btn->setStyleSheet("font-weight: bold;");
+    // colorazione del bottone in base alla threshold:
+    // rosso = troppo caldo, troppo umido o pressione troppo alta
+    // blu = troppo freddo, troppo poco umido o pressione troppo bassa
+    // nessun colore = regolare
+    if (!(sensor->getArray().empty()))
+    {
+        if (sensor->isInThreshold() == 1)
+            btn->setStyleSheet("background-color: red; font-weight: bold;");
+        if (sensor->isInThreshold() == -1)
+            btn->setStyleSheet("background-color: dodgerblue; font-weight: bold;");
+    }
+    btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    QListWidgetItem *item = new QListWidgetItem();
+    item->setSizeHint(QSize(100, 40));
+    listWidget->addItem(item);
+    listWidget->setItemWidget(item, btn);
+    // connessione del bottone con la parte destra
+    connect(btn, &QPushButton::pressed, [this, sensor]()
+            { viewRight(sensor); });
+}
+
+void BodyWidget::viewRight(Sensor *sensor)
+{
+    QLayoutItem *item;
+    // controllo che la parte destra sia vuota
+    while ((item = rightlayout->takeAt(0)) != nullptr)
+    {
+        delete item->widget();
+        delete item;
+    }
+    createRight(sensor);
 }
 
 void BodyWidget::createRight(Sensor *sensor)
@@ -63,45 +111,45 @@ void BodyWidget::createRight(Sensor *sensor)
     QHBoxLayout *subcont3_layout = new QHBoxLayout(subcontainer3);
     QHBoxLayout *subcont4_layout = new QHBoxLayout(subcontainer4);
 
+    // icona
     QPixmap *icon = new QPixmap("C:\\Users\\david\\OneDrive\\Desktop\\PaO\\icons\\" + QString::fromStdString(sensor->getIcon()));
     *icon = icon->scaled(QSize(25, 25), Qt::KeepAspectRatio);
     QLabel *iconLabel = new QLabel(subcontainer1);
     iconLabel->setPixmap(*icon);
 
+    // nome del sensore
     QLabel *subtitle = new QLabel(subcontainer1);
     subtitle->setText(QString::fromStdString(sensor->getName()));
     subtitle->setFont(QFont("Arial", 14, QFont::Bold));
     subtitle->setStyleSheet("text-transform: uppercase");
-    subtitle->setFixedWidth(150);
-    subtitle->setAlignment(Qt::AlignLeft);
+    subtitle->setFixedWidth(300);
 
     subcont1_layout->addWidget(iconLabel);
     subcont1_layout->addWidget(subtitle);
 
+    // valore atteso
     QLabel *exp = new QLabel(subcontainer2);
-    QLabel *exp_value = new QLabel(subcontainer2);
-    exp->setText("Expected Value: ");
-    exp_value->setText(QString::number(sensor->getExpValue(), 'f', 2));
-    exp->setFont(QFont("Arial", 11));
-    exp_value->setFont(QFont("Arial", 10));
-    exp->setFixedWidth(150);
-    exp_value->setFixedWidth(50);
+    exp->setText("Expected Value: " + QString::number(sensor->getExpValue(), 'f', 2));
+    exp->setFont(QFont("Arial", 12));
+    exp->setFixedWidth(200);
 
     subcont2_layout->addWidget(exp);
-    subcont2_layout->addWidget(exp_value);
 
+    // soglia
     QLabel *thr = new QLabel(subcontainer2);
-    QLabel *thr_value = new QLabel(subcontainer2);
-    thr->setText("Threshold: ");
-    thr_value->setText(QString::number(sensor->getThreshold(), 'f', 2));
-    thr->setFont(QFont("Arial", 11));
-    thr_value->setFont(QFont("Arial", 10));
-    thr->setFixedWidth(150);
-    thr_value->setFixedWidth(50);
+    thr->setText("Threshold: " + QString::number(sensor->getThreshold(), 'f', 2));
+    thr->setFont(QFont("Arial", 12));
+    thr->setFixedWidth(200);
+    thr->setStyleSheet("padding-left: 20px;");
 
     subcont2_layout->addWidget(thr);
-    subcont2_layout->addWidget(thr_value);
 
+    // visitor per informazioni specifiche
+    SensorInfo *visitor = new SensorInfo();
+    sensor->accept(*visitor);
+    subcont2_layout->addWidget(visitor->getWidget());
+
+    // bottoni per azioni sul sensore
     QPushButton *generateBtn = new QPushButton("Generate", subcontainer4);
     generateBtn->setFixedWidth(100);
     QPushButton *saveBtn = new QPushButton("Save Sensor", subcontainer4);
@@ -117,12 +165,13 @@ void BodyWidget::createRight(Sensor *sensor)
             { saveSensor(sensor); });
     connect(deleteBtn, &QPushButton::pressed, [this, sensor]()
             { deleteSensor(sensor); });
-    connect(modifyBtn, &QPushButton::pressed, [this, sensor]()
-            { modifySensor(sensor); });
+    connect(modifyBtn, &QPushButton::pressed, [this, sensor, visitor]()
+            { modifySensor(sensor, visitor); });
 
+    // creazione del chart
     QWidget *chartView = createChart(sensor);
 
-    subcont3_layout->addWidget(chartView, 0, Qt::AlignCenter);
+    subcont3_layout->addWidget(chartView, 0, Qt::AlignLeft);
 
     subcont4_layout->addWidget(generateBtn);
     subcont4_layout->addWidget(saveBtn);
@@ -130,9 +179,8 @@ void BodyWidget::createRight(Sensor *sensor)
     subcont4_layout->addWidget(modifyBtn);
 
     subcontainer1->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    subcontainer1->setFixedWidth(250);
+    subcontainer1->setFixedWidth(200);
     subcontainer2->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-    subcontainer2->setFixedWidth(500);
 
     subcontainer1->setLayout(subcont1_layout);
     subcontainer2->setLayout(subcont2_layout);
@@ -146,31 +194,6 @@ void BodyWidget::createRight(Sensor *sensor)
 
     rightlayout->addWidget(container);
     right->setLayout(rightlayout);
-}
-
-void BodyWidget::connection(Sensor *sensor)
-{
-    QPushButton *btn = new QPushButton(QString::fromStdString(sensor->getName()), listWidget);
-    btn->setFixedHeight(40);
-    btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    QListWidgetItem *item = new QListWidgetItem();
-    item->setSizeHint(QSize(100, 40));
-    listWidget->addItem(item);
-    listWidget->setItemWidget(item, btn);
-    connect(btn, &QPushButton::pressed, [this, sensor]()
-            { viewRight(sensor); });
-}
-
-void BodyWidget::viewRight(Sensor *sensor)
-{
-    QLayoutItem *item;
-    while ((item = rightlayout->takeAt(0)) != nullptr)
-    {
-        delete item->widget();
-        delete item;
-    }
-
-    createRight(sensor);
 }
 
 void BodyWidget::filterList(const QString &query)
@@ -194,6 +217,7 @@ void BodyWidget::newSensor()
     QDialog dialog;
     dialog.setWindowTitle("New Sensor");
 
+    // form per ottenimento dei dati per la creazione del sensore
     QFormLayout formLayout(&dialog);
 
     QLineEdit *sensorName = new QLineEdit(&dialog);
@@ -227,8 +251,10 @@ void BodyWidget::newSensor()
         double thr = sensorThr->text().toDouble();
         string selectedClass = classBox->currentText().toStdString();
 
-        Sensor *s = tab->getGroup()->Group::newSensor(name, exp, thr, selectedClass);
-        connection(s);
+        // Sensor *s = tab->getGroup()->Group::newSensor(name, exp, thr, selectedClass);
+        Sensor *s = Sensor::newSensor(name, exp, thr, selectedClass);
+        tab->getGroup()->addSensor(s);
+        connection(s); // colleamento del sensore alla listwidget e alla parte destra
     }
 }
 
@@ -249,13 +275,15 @@ void BodyWidget::loadSensor()
         return;
     }
 
-    Group *group = tab->getGroup();
-    if (!group)
-    {
-        qDebug() << "Error: 'group' pointer is null.";
-        return;
-    }
-    Sensor *s = group->loadSensor(path.toStdString());
+    // Group *group = tab->getGroup();
+    // if (!group)
+    // {
+    //     qDebug() << "Error: 'group' pointer is null.";
+    //     return;
+    // }
+    // Sensor *s = group->loadSensor(path.toStdString());
+    Sensor *s = Sensor::load(path.toStdString());
+    tab->getGroup()->addSensor(s);
 
     if (s)
     {
@@ -270,7 +298,7 @@ void BodyWidget::loadSensor()
 
 void BodyWidget::generate(Sensor *sensor)
 {
-    sensor->getArray().clear();
+    sensor->clear();
     sensor->generate();
     refresh();
     createRight(sensor);
@@ -332,7 +360,7 @@ void BodyWidget::deleteSensor(Sensor *sensor)
     }
 }
 
-void BodyWidget::modifySensor(Sensor *sensor)
+void BodyWidget::modifySensor(Sensor *sensor, SensorInfo *visitor)
 {
     QDialog dialog(this);
     dialog.setWindowTitle("Select an Option");
@@ -351,6 +379,18 @@ void BodyWidget::modifySensor(Sensor *sensor)
     buttonGroup->addButton(renameBtn);
     buttonGroup->addButton(changeExpBtn);
     buttonGroup->addButton(changeThrBtn);
+
+    // possibilità di modificare il timer solo per i sensori di temperatura del mosto
+    QRadioButton *changeTimer = new QRadioButton("Change Timer", &dialog);
+    if (visitor->isMust())
+    {
+        layout->addWidget(changeTimer);
+        buttonGroup->addButton(changeTimer);
+    }
+    else
+    {
+        delete changeTimer;
+    }
 
     QPushButton *okBtn = new QPushButton("OK", &dialog);
     connect(okBtn, &QPushButton::clicked, &dialog, &QDialog::accept);
@@ -386,6 +426,16 @@ void BodyWidget::modifySensor(Sensor *sensor)
                 sensor->setThreshold(text.toDouble());
             }
         }
+        else if (visitor->isMust() && selectedBtn == changeTimer)
+        {
+            bool ok;
+            QString text = QInputDialog::getText(this, tr("Change Timer"), tr("Timer:"), QLineEdit::Normal, QDir::home().dirName(), &ok);
+            if (ok && !text.isEmpty())
+            {
+                MustTemperatureSensor *must = dynamic_cast<MustTemperatureSensor *>(sensor);
+                must->setTimer(text.toDouble());
+            }
+        }
         refresh();
         createRight(sensor);
     }
@@ -414,25 +464,40 @@ QWidget *BodyWidget::createChart(Sensor *sensor)
     chart->legend()->setVisible(false);
 
     QLineSeries *series = new QLineSeries();
+    // minimo e massimo double per il confronto
+    double minY = numeric_limits<double>::max();
+    double maxY = numeric_limits<double>::lowest();
+    // per ogni dato nel vettore
     for (const Data &d : sensor->getArray())
     {
-        series->append(stoi(d.getTime()), d.getValue());
+        double value = d.getValue();
+        // aggiungo il dato al grafico
+        series->append(stoi(d.getTime()), value);
+        // trovo minimo e massimo
+        minY = min(minY, value);
+        maxY = max(maxY, value);
     }
-
+    // allargo la visualizzazione del grafico
+    minY--;
+    maxY++;
     chart->addSeries(series);
 
+    // asse x
     QValueAxis *axisX = new QValueAxis;
     axisX->setTitleText("Time (sec)");
     chart->addAxis(axisX, Qt::AlignBottom);
     series->attachAxis(axisX);
 
+    // asse y
     QValueAxis *axisY = new QValueAxis;
     axisY->setTitleText(QString::fromStdString(sensor->getUnit()));
-    // axisY->setMin(0);
-    // axisY->setMax(50);
+    // set del minimo e del massimo
+    axisY->setMin(minY);
+    axisY->setMax(maxY);
     chart->addAxis(axisY, Qt::AlignLeft);
     series->attachAxis(axisY);
 
+    // colorazione della linea dei valori ottenuti
     series->setPen(QPen(QColor(Qt::red), 2));
     series->setPointsVisible(true);
     series->setPointLabelsFormat("@yPoint");
@@ -440,6 +505,34 @@ QWidget *BodyWidget::createChart(Sensor *sensor)
     series->setPointLabelsFormat("%.2f");
     series->setUseOpenGL(true);
 
+    if (!series->points().isEmpty())
+    {
+        double expectedValue = sensor->getExpValue();
+        double upperThresholdValue = expectedValue + sensor->getThreshold();
+        double lowerThresholdValue = expectedValue - sensor->getThreshold();
+
+        // linea che identifica la soglia superiore
+        QLineSeries *upperThreshold = new QLineSeries();
+        upperThreshold->append(series->points().first().x(), upperThresholdValue);
+        upperThreshold->append(series->points().last().x(), upperThresholdValue);
+        chart->addSeries(upperThreshold);
+
+        // linea che identifica la soglia inferiore
+        QLineSeries *lowerThreshold = new QLineSeries();
+        lowerThreshold->append(series->points().first().x(), lowerThresholdValue);
+        lowerThreshold->append(series->points().last().x(), lowerThresholdValue);
+        chart->addSeries(lowerThreshold);
+
+        upperThreshold->attachAxis(axisX);
+        upperThreshold->attachAxis(axisY);
+        lowerThreshold->attachAxis(axisX);
+        lowerThreshold->attachAxis(axisY);
+
+        upperThreshold->setPen(QPen(QColor(Qt::green), 2, Qt::DashLine));
+        lowerThreshold->setPen(QPen(QColor(Qt::green), 2, Qt::DashLine));
+    }
+
+    // visualizzazione del grafico e delle sue dimensioni
     QChartView *chartView = new QChartView(chart);
     chartView->setMinimumSize(800, 400);
     chartView->setRenderHint(QPainter::Antialiasing);

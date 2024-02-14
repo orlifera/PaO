@@ -1,12 +1,14 @@
 #include "../headers/winery.h"
+#include "../headers/sensorvisitor.h"
 
 // tutti i sensori di temperatura di una cantina non sono a contatto
 WineryTemperatureSensor::WineryTemperatureSensor(string n, double temp, double th) : TemperatureSensor(n, false, temp, th) {}
+
 double WineryTemperatureSensor::range = 0.5;
+
 // funzione che genera dati seocndo una distribuzione uniforme
 void WineryTemperatureSensor::generate()
 {
-    // getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     uniform_real_distribution<double> distribution(getExpValue() - range / 2.0, getExpValue() + range / 2.0);
@@ -23,6 +25,7 @@ void WineryTemperatureSensor::generate()
         push(d);
     }
 }
+
 QJsonObject WineryTemperatureSensor::classSensor() const
 {
     QString className = "winery-temperature";
@@ -31,4 +34,9 @@ QJsonObject WineryTemperatureSensor::classSensor() const
     classObj["class"] = className;
     classObj["contact"] = classInfo;
     return classObj; //
+}
+
+void WineryTemperatureSensor::accept(SensorVisitor &visitor)
+{
+    visitor.visitWinery();
 }

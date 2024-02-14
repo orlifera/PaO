@@ -21,7 +21,6 @@ HEADERS += headers/air.h \
            headers/atm.h \
            headers/barrel.h \
            headers/data.h \
-           headers/functions.h \
            headers/group.h \
            headers/humidity.h \
            headers/include.h \
@@ -37,13 +36,14 @@ HEADERS += headers/air.h \
            headers/temperature.h \
            headers/time.h \
            headers/vines.h \
-           headers/winery.h
+           headers/winery.h \
+           headers/sensorvisitor.h \
+           headers/sensorinfo.h 
 SOURCES += main.cpp \
            sources/air.cpp \
            sources/atm.cpp \
            sources/barrel.cpp \
            sources/data.cpp \
-           sources/functions.cpp \
            sources/group.cpp \
            sources/humidity.cpp \
            sources/must.cpp \
@@ -57,4 +57,5 @@ SOURCES += main.cpp \
            view/tab.cpp \
            view/mainwindow.cpp \
            view/head.cpp \
-           view/body.cpp
+           view/body.cpp \
+           view/sensorinfo.cpp

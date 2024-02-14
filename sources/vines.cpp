@@ -1,16 +1,18 @@
 #include "../headers/vines.h"
+#include "../headers/sensorvisitor.h"
 
 // tutti i sensori per la temperatura nelle vigne non sono a contatto
 VinesTemperatureSensor::VinesTemperatureSensor(string n, double temp, double th) : TemperatureSensor(n, false, temp, th) {}
+
 double VinesTemperatureSensor::amplitude = 5.0;
 double VinesTemperatureSensor::stdDeviation = 3.0;
+
 // funzione che genera dati secondo una distribuzione sinusoidale
 // che viene calcolata usando una distribuzione normale (gauss)
 // questo perché la variazione di temperatura in una giornata segue
 // un andamento periodico
 void VinesTemperatureSensor::generate()
 {
-    getArray().clear();
     const double pi = acos(-1);
     random_device rd;
     default_random_engine generator(rd());
@@ -26,6 +28,7 @@ void VinesTemperatureSensor::generate()
         push(d);
     }
 }
+
 QJsonObject VinesTemperatureSensor::classSensor() const
 {
     QString className = "vines-temperature";
@@ -34,4 +37,9 @@ QJsonObject VinesTemperatureSensor::classSensor() const
     classObj["class"] = className;
     classObj["contact"] = classInfo;
     return classObj;
+}
+
+void VinesTemperatureSensor::accept(SensorVisitor &visitor)
+{
+    visitor.visitVines();
 }

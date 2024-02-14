@@ -1,12 +1,15 @@
 #include "../headers/must.h"
+#include "../headers/sensorvisitor.h"
+
 // tutti i sensori di temperatura del mosto sono a contatto
 MustTemperatureSensor::MustTemperatureSensor(string n, double temp, double th) : TemperatureSensor(n, true, temp, th) {}
+
 double MustTemperatureSensor::range = 3;
 double MustTemperatureSensor::timer = 24.0;
+
 // funzione che genera dati secondo una distribuzione uniforme
 void MustTemperatureSensor::generate()
 {
-    getArray().clear();
     random_device rd;
     default_random_engine generator(rd());
     uniform_real_distribution<double> distribution(getExpValue() - range / 2.0, getExpValue() + range / 2.0);
@@ -23,11 +26,22 @@ void MustTemperatureSensor::generate()
         push(d);
     }
 }
+
+double MustTemperatureSensor::getTimer() const
+{
+    return timer;
+}
+
 void MustTemperatureSensor::setTimer(double t)
 {
-    if (t <= 24.0 || t >= 0.0)
+    if (t > 24.0)
+        timer = 24.0;
+    else if (t < 0)
+        timer = 0;
+    else if (t <= 24 && t >= 0)
         timer = t;
 }
+
 QJsonObject MustTemperatureSensor::classSensor() const
 {
     QString className = "must-temperature";
@@ -37,4 +51,9 @@ QJsonObject MustTemperatureSensor::classSensor() const
     classObj["contact"] = classInfo;
     classObj["timer"] = timer;
     return classObj;
+}
+
+void MustTemperatureSensor::accept(SensorVisitor &visitor)
+{
+    visitor.visitMust(*this);
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include "sensor.h"
+
+// sensore di pressione generico derivato da sensore generico
 class PressureSensor : public Sensor
 {
 public:

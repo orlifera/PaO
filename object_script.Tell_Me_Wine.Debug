@@ -3,7 +3,6 @@ debug/air.o
 debug/atm.o
 debug/barrel.o
 debug/data.o
-debug/functions.o
 debug/group.o
 debug/humidity.o
 debug/must.o
@@ -18,6 +17,7 @@ debug/tab.o
 debug/mainwindow.o
 debug/head.o
 debug/body.o
+debug/sensorinfo.o
 debug/moc_mainwindow.o
 debug/moc_tab.o
 debug/moc_head.o
