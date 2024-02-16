@@ -4,7 +4,7 @@
 // tutti i sensori per la pressione atmosferica hanno come valore atteso 1.0
 AtmPressureSensor::AtmPressureSensor(string n, double th) : PressureSensor(n, 1.0, th) {}
 
-double AtmPressureSensor::stdDeviation = 2.0;
+double AtmPressureSensor::stdDeviation = 0.5;
 double AtmPressureSensor::meanPoisson = 0.1;
 
 // funzione che genera dati secondo una distribuzione mista
@@ -30,10 +30,16 @@ void AtmPressureSensor::generate()
         int events = poisson(generator);
         if (events > 0)
         {
-            pressure += (events % 2 == 0) ? 5.0 : -5.0;
+            if (pressure >= 0.7 && pressure <= 1.2)
+            {
+                pressure += (events % 2 == 0) ? 0.2 : -0.2;
+            }
+            // Limita il risultato all'intervallo [0, 2]
+            pressure = max(0.5, min(1.5, pressure));
+            pressure += (events % 2 == 0) ? 0.2 : -0.2;
+            d.setValue(pressure);
+            push(d);
         }
-        d.setValue(pressure);
-        push(d);
     }
 }
 

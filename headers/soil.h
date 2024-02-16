@@ -5,7 +5,7 @@
 class SoilHumiditySensor : public HumiditySensor
 {
 private:
-    static double logStdDeviation; // logaritmo della deviazione standard
+    static double stdDeviation; // logaritmo della deviazione standard
 public:
     SoilHumiditySensor(string, double, double = 0);
     void generate();

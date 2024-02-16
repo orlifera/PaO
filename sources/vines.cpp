@@ -4,8 +4,8 @@
 // tutti i sensori per la temperatura nelle vigne non sono a contatto
 VinesTemperatureSensor::VinesTemperatureSensor(string n, double temp, double th) : TemperatureSensor(n, false, temp, th) {}
 
-double VinesTemperatureSensor::amplitude = 5.0;
-double VinesTemperatureSensor::stdDeviation = 3.0;
+double VinesTemperatureSensor::amplitude = 2.0;
+double VinesTemperatureSensor::stdDeviation = 0.8;
 
 // funzione che genera dati secondo una distribuzione sinusoidale
 // che viene calcolata usando una distribuzione normale (gauss)
@@ -22,7 +22,7 @@ void VinesTemperatureSensor::generate()
     {
         Data d;
         d.setTime(hour);
-        double temperature = getExpValue() + amplitude * sin(2 * pi * hour / 24.0);
+        double temperature = amplitude * sin(2 * pi * hour / 24.0);
         temperature += distribution(generator);
         d.setValue(temperature);
         push(d);

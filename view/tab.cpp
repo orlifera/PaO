@@ -18,19 +18,10 @@ vector<Sensor *> Tab::getVector() const { return group->getSensors(); }
 
 void Tab::save()
 {
-    QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::AnyFile);
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Group"), "untitled.json", tr("JSON files (*.json)"));
 
-    dialog.setWindowTitle("Save Group");
-    dialog.setNameFilter("JSON files (*.json)");
-
-    // nome di default
-    dialog.selectFile("untitled");
-
-    if (dialog.exec() == QDialog::Accepted)
+    if (!filePath.isEmpty())
     {
-        QString filePath = dialog.selectedFiles().first();
-
         group->save(filePath.toStdString());
         path = filePath.toStdString();
     }

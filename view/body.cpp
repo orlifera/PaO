@@ -5,14 +5,24 @@
 BodyWidget::BodyWidget(Tab *t, QWidget *parent) : QWidget(parent), tab(t)
 {
     left = new QWidget(this);
-    right = new QWidget(this);
+
+    // Aggiungi la QScrollArea per la parte destra
+    QScrollArea* rightScrollArea = new QScrollArea(this);
+    right = new QWidget(rightScrollArea);
     rightlayout = new QVBoxLayout(right);
+
     createLeft();
 
     left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(left, 1);
-    layout->addWidget(right, 4);
+    
+    // Imposta la parte destra come widget centrale della QScrollArea
+    rightScrollArea->setWidget(right);
+    rightScrollArea->setWidgetResizable(true);
+
+    layout->addWidget(rightScrollArea, 4);
 
     this->setLayout(layout);
 }
@@ -113,7 +123,7 @@ void BodyWidget::createRight(Sensor *sensor)
 
     // icona
     QDir::setCurrent(QCoreApplication::applicationDirPath());
-    QPixmap *icon = new QPixmap("../icons/" + QString::fromStdString(sensor->getIcon()));
+    QPixmap *icon = new QPixmap("icons/" + QString::fromStdString(sensor->getIcon()));
     *icon = icon->scaled(QSize(25, 25), Qt::KeepAspectRatio);
     QLabel *iconLabel = new QLabel(subcontainer1);
     iconLabel->setPixmap(*icon);
