@@ -192,17 +192,3 @@ Group *Group::load(string filename)
     }
     return 0;
 }
-
-Sensor *Group::loadSensor(string filename)
-{
-    Sensor *s = Sensor::load(filename);
-    addSensor(s); // aggiunge il nuovo sensore al gruppo
-    return s;
-}
-
-Sensor *Group::newSensor(string n, double e, double t, string c)
-{
-    Sensor *s = Sensor::newSensor(n, e, t, c);
-    addSensor(s); // aggiunge il nuovo sensore al gruppo
-    return s;
-}

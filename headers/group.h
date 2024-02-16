@@ -36,8 +36,4 @@ public:
     void save(string) const;
     // carica grupppo
     static Group *load(string);
-    // carica sensore nel gruppo
-    Sensor *loadSensor(string);
-    // crea nuovo sensore nel gruppo
-    Sensor *newSensor(string, double, double, string);
 };
