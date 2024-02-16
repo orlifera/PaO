@@ -275,14 +275,6 @@ void BodyWidget::loadSensor()
         qDebug() << "Error: 'tab' pointer is null.";
         return;
     }
-
-    // Group *group = tab->getGroup();
-    // if (!group)
-    // {
-    //     qDebug() << "Error: 'group' pointer is null.";
-    //     return;
-    // }
-    // Sensor *s = group->loadSensor(path.toStdString());
     Sensor *s = Sensor::load(path.toStdString());
     tab->getGroup()->addSensor(s);
 

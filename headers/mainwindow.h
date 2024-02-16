@@ -10,7 +10,7 @@ class MainWindow : public QMainWindow
 
 private:
     QTabWidget *tabs; // puntatore al widget che gestisce le tabs
-    QLabel *welcome;  // label di benvenuto inizale
+    QWidget *welcome;  // label di benvenuto inizale
     bool checked;     // attributo booleano per la chiusura delle tabs
 
 public:
