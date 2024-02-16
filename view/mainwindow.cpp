@@ -15,9 +15,19 @@ MainWindow::MainWindow(QWidget *parent)
     mainLayout->addWidget(tabs);
 
     // messaggio di benvenuto
-    welcome = new QLabel(mainWidget);
-    welcome->setText("There are no open groups");
-    welcome->setStyleSheet("font-size: 16pt;");
+    welcome = new QWidget(mainWidget);
+    QVBoxLayout *welcome_layout = new QVBoxLayout(welcome);
+    QLabel *weltitle = new QLabel(welcome);
+    QLabel *welsubtitle = new QLabel(welcome);
+
+    weltitle->setText("Welcome to Tell Me Wine!");
+    welsubtitle->setText("Use the menu at the top-left corner to open a new group.");
+    weltitle->setStyleSheet("font-weight:bold; font-size: 18pt;");
+    welsubtitle->setStyleSheet("font-size: 16pt;");
+    welcome_layout->addWidget(weltitle, 0, Qt::AlignCenter);
+    welcome_layout->addWidget(welsubtitle, 0, Qt::AlignCenter);
+
+    welcome->setLayout(welcome_layout);
     mainLayout->addWidget(welcome, 0, Qt::AlignCenter);
     mainWidget->setLayout(mainLayout);
 
@@ -40,11 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(actionQuit, &QAction::triggered, this, &MainWindow::closeApp);
 
     setMenuBar(menuBar);
-    // Group *g = Group::load("C:\\Users\\david\\OneDrive\\Desktop\\PaO\\fss.json");
-    // Tab *t = new Tab(g, tabs, "../fss.json");
-    // tabs->addTab(t, QString::fromStdString(g->getGroupName()));
-    // tabs->setCurrentWidget(t);
-    // firstView();
 }
 
 void MainWindow::closeTab(int index)
